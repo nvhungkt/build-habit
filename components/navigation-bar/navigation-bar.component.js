@@ -1,52 +1,71 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { Header, Left, Body, Right, Button, Icon, Tab, Tabs } from 'native-base';
 
 export default class NavigationBar extends React.Component {
   render() {
     return (
-      <View style={styles.container}>
-        <View style={styles.title}>
-          <Text>Hamburger</Text>
-          <Text>Habit</Text>
-          <Text>Notif</Text>
-        </View>
-        <View style={styles.dates}>
-          <View style={styles.date}>
-            <Text>Yesterday</Text>
-          </View>
-          <View style={styles.date}>
-            <Text>Today</Text>
-          </View>
-          <View style={styles.date}>
-            <Text>Tomorrow</Text>
-          </View>
-        </View>
-      </View>
+      <React.Fragment>
+        <Header style={styles.header} hasTabs>
+          <Left style={{ flex: 1 }}>
+            <Button transparent>
+              <Icon style={{color: 'black'}} name='menu' />
+            </Button>
+          </Left>
+          <Body style={{ flex: 1 }}>
+            <Text style={styles.appName}>Habit</Text>
+          </Body>
+          <Right style={{ flex: 1 }}>
+            <Button transparent>
+              <Icon style={{color: 'black'}} name='notifications' />
+            </Button>
+          </Right>
+        </Header>
+        <Tabs tabBarUnderlineStyle={styles.tabBarUnderLine} initialPage={1}>
+          <Tab
+            tabStyle={styles.header}
+            activeTabStyle={styles.header}
+            textStyle={styles.tabText}
+            activeTextStyle={styles.activeText}
+            heading="Yesterday">
+          </Tab>
+          <Tab
+            tabStyle={styles.header}
+            activeTabStyle={styles.header}
+            textStyle={styles.tabText}
+            activeTextStyle={styles.activeText}
+            heading="Today">
+          </Tab>
+          <Tab
+            tabStyle={styles.header}
+            activeTabStyle={styles.header}
+            textStyle={styles.tabText}
+            activeTextStyle={styles.activeText}
+            heading="Tomorrow">
+          </Tab>
+        </Tabs>
+      </React.Fragment>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#fff',
-    height: 100,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc'
-  },
-  title: {
+  appName: {
+    fontSize: 22,
     flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    padding: 15,
-    paddingBottom: 0
+    alignItems: 'flex-end',
+    alignSelf: 'center'
   },
-  dates: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-around',
+  header: {
+    backgroundColor: '#fff'
   },
-  date: {
-    flex: 1,
-    alignItems: 'center'
+  tabText: {
+    color: 'black'
+  },
+  activeText: {
+    color: '#e91e63'
+  },
+  tabBarUnderLine: {
+    backgroundColor: '#e91e63'
   }
 });

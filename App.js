@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { Container } from 'native-base';
 
 import NavigationBar from './components/navigation-bar/navigation-bar.component';
 import Todo from './components/todo/todo.component';
@@ -8,7 +9,7 @@ import TodoList from './components/todolist/todolist.component';
 export default class App extends React.Component {
   render() {
     return (
-      <View style={styles.container}>
+      <Container style={styles.container}>
         <NavigationBar />
         <TodoList name='Morning'>
           <Todo todo='Exercises' times='06:15 - 06:45' status='Done' />
@@ -19,7 +20,7 @@ export default class App extends React.Component {
         </TodoList>
         <TodoList name='Evening'>
         </TodoList>
-      </View>
+      </Container>
     );
   }
 }
@@ -27,6 +28,6 @@ export default class App extends React.Component {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#fff',
-    paddingTop: 20
+    paddingTop: 24
   }
 });

@@ -5,7 +5,7 @@ export default class TodoList extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text>{this.props.name}</Text>
+        <Text style={textStyles.section}>{this.props.name}</Text>
         {this.props.children}
       </View>
     );
@@ -14,7 +14,13 @@ export default class TodoList extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    margin: 20,
-    marginBottom: 0
+    margin: 20
+  }
+});
+
+const textStyles = StyleSheet.create({
+  section: {
+    fontSize: 22,
+    fontWeight: 'bold'
   }
 });

@@ -7,11 +7,18 @@ export default class Todo extends React.Component {
       <View style={styles.container}>
         <View style={styles.content}>
           <View style={styles.todo}>
-            <Text>{this.props.todo}</Text>
-            <Text>{this.props.times}</Text>
+            <Text style={textStyles.todo}>{this.props.todo}</Text>
+            <Text style={textStyles.times}>{this.props.times}</Text>
           </View>
           <View style={styles.status}>
-            <Text>{this.props.status}</Text>
+            <Text style={
+              this.props.status === 'Done' ?
+              textStyles.statusDone :
+              textStyles.statusNotDone
+              }
+            >
+              {this.props.status}
+            </Text>
           </View>
         </View>
       </View>
@@ -22,7 +29,7 @@ export default class Todo extends React.Component {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#fff',
-    height: 120,
+    height: 80,
     borderBottomWidth: 1,
     borderBottomColor: '#ccc'
   },
@@ -38,5 +45,27 @@ const styles = StyleSheet.create({
     flex: 2,
     alignItems: 'center',
     alignSelf: 'center'
+  }
+});
+
+const textStyles = StyleSheet.create({
+  todo: {
+    color: '#424242',
+    fontSize: 20,
+    fontWeight: 'bold'
+  },
+  times: {
+    color: '#424242',
+    fontSize: 20
+  },
+  statusDone: {
+    color: '#64dd17',
+    fontSize: 20,
+    fontWeight: 'bold'
+  },
+  statusNotDone: {
+    color: '#424242',
+    fontSize: 20,
+    fontWeight: 'bold'
   }
 });

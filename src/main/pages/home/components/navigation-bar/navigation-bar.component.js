@@ -1,7 +1,19 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
-import { Link } from 'react-router-native';
+import { StyleSheet } from 'react-native';
 import { Header, Left, Body, Right, Button, Icon, Title } from 'native-base';
+
+const styles = StyleSheet.create({
+  header: {
+    backgroundColor: '#fff',
+    marginTop: 24
+  },
+  appName: {
+    fontSize: 32,
+    fontFamily: "Pacifico",
+    color: '#000',
+    alignSelf: 'center'
+  }
+});
 
 export default class NavigationBar extends React.Component {
   render() {
@@ -24,15 +36,3 @@ export default class NavigationBar extends React.Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  header: {
-    backgroundColor: '#fff'
-  },
-  appName: {
-    fontSize: 32,
-    fontFamily: "Pacifico",
-    color: '#000',
-    alignSelf: 'center'
-  }
-});

@@ -1,8 +1,6 @@
 import React from 'react';
-import { View } from 'react-native';
-import { Button, Content } from 'native-base';
+import { Content, Button, Text } from 'native-base';
 
-import NavigationBar from './components/navigation-bar';
 import HabitTag from './components/habit-tag';
 
 const tags = [
@@ -54,10 +52,21 @@ const tags = [
 ];
 
 export default class AddActivity extends React.Component {
+  static navigationOptions = ({ navigation }) => {
+    return {
+      title: 'Add new habit',
+      headerTitleStyle: { alignSelf: 'center' },
+      headerRight: (
+        <Button transparent onPress={() => navigation.push('AddActivityDetail')}>
+          <Text style={{ color: '#e91e63' }}>CREATE</Text>
+        </Button>
+      )
+    };
+  }
+
   render() {
     return (
       <React.Fragment>
-        <NavigationBar />
         <Content>
           {tags.map((tag, index) => <HabitTag key={index} name={tag.name} habits={tag.habits} />)}
         </Content>

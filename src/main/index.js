@@ -4,12 +4,17 @@ import { NativeRouter } from 'react-router-native';
 import { Root } from 'native-base';
 import { Font, AppLoading } from 'expo';
 
+import Pacifico from "./assets/font/Pacifico.ttf";
+import Roboto from "native-base/Fonts/Roboto.ttf";
+import RobotoMedium from "native-base/Fonts/Roboto_medium.ttf";
+
 import { store } from '../store';
 
 import App from "./app.component";
 
 const appStore = store.configureStore();
 
+  // eslint-disable-next-line
 export default class Main extends React.Component {
   constructor(props) {
     super(props);
@@ -18,9 +23,10 @@ export default class Main extends React.Component {
 
   async componentWillMount() {
     await Font.loadAsync({
-      Pacifico: require("./assets/font/Pacifico.ttf"),
-      Roboto: require("native-base/Fonts/Roboto.ttf"),
-      Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf")
+      Pacifico,
+      Roboto,
+      // eslint-disable-next-line
+      Roboto_medium: RobotoMedium
     });
     this.setState({ loading: false });
   }

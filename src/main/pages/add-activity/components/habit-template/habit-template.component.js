@@ -2,21 +2,6 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Text, Icon, Button } from 'native-base';
 
-export default class HabitTemplate extends React.Component {
-  render() {
-    return (
-      <View style={styles.container}>
-        <View style={styles.content}>
-          <Text style={styles.habit}>{this.props.name}</Text>
-          <Button style={styles.action} transparent>
-            <Icon style={{ color: 'black' }} name="md-add" />
-          </Button>
-        </View>
-      </View>
-    );
-  }
-}
-
 const styles = StyleSheet.create({
   container: {
     height: 60,
@@ -36,3 +21,18 @@ const styles = StyleSheet.create({
     alignSelf: 'center'
   }
 });
+
+export default class HabitTemplate extends React.Component {
+  render() {
+    return (
+      <View style={styles.container}>
+        <View style={styles.content}>
+          <Text style={styles.habit}>{this.props.name}</Text>
+          <Button style={styles.action} transparent>
+            <Icon style={{ color: 'black' }} name="md-add" />
+          </Button>
+        </View>
+      </View>
+    );
+  }
+}

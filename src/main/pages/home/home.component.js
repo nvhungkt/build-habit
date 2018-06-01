@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { Tab, Tabs, Content } from 'native-base';
 
 import NavigationBar from './components/navigation-bar';
@@ -22,8 +22,25 @@ const tabList = [
   }
 ];
 
-const renderTabs = tabList => {
-  return tabList.map((tab, index) => {
+const styles = StyleSheet.create({
+  tab: {
+    backgroundColor: '#fff'
+  },
+  tabText: {
+    color: 'black',
+    fontSize: 17
+  },
+  activeText: {
+    color: '#e91e63',
+    fontSize: 20
+  },
+  tabBarUnderLine: {
+    backgroundColor: '#e91e63'
+  }
+});
+
+const renderTabs = tabs => {
+  return tabs.map((tab, index) => {
     return (
       <Tab
         key={index}
@@ -46,35 +63,21 @@ const renderTabs = tabList => {
       </Tab>
     );
   });
-}
+};
 
 export default class Home extends React.Component {
+  static navigationOptions = {
+    header: <NavigationBar />
+  }
+
   render() {
     return (
       <React.Fragment>
-        <NavigationBar />
         <Tabs tabBarUnderlineStyle={styles.tabBarUnderLine} initialPage={1}>
           {renderTabs(tabList)}
         </Tabs>
-        <AddNewActivity />
+        <AddNewActivity navigation={this.props.navigation} />
       </React.Fragment>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  tab: {
-    backgroundColor: '#fff'
-  },
-  tabText: {
-    color: 'black',
-    fontSize: 17
-  },
-  activeText: {
-    color: '#e91e63',
-    fontSize: 20
-  },
-  tabBarUnderLine: {
-    backgroundColor: '#e91e63'
-  }
-});

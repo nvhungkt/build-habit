@@ -35,11 +35,11 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    flexDirection: 'row',
+    flexDirection: 'row'
   },
   todo: {
     flex: 8,
-    alignSelf: 'center',
+    alignSelf: 'center'
   },
   status: {
     flex: 2,

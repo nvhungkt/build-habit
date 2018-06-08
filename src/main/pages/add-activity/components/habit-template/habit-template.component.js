@@ -1,26 +1,8 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
 import { Text, Icon, Button } from 'native-base';
 
-const styles = StyleSheet.create({
-  container: {
-    height: 60,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc'
-  },
-  content: {
-    flex: 1,
-    flexDirection: 'row'
-  },
-  habit: {
-    flex: 7,
-    alignSelf: 'center'
-  },
-  action: {
-    flex: 1,
-    alignSelf: 'center'
-  }
-});
+import { styles } from './habit-template.style';
 
 export default class HabitTemplate extends React.Component {
   render() {

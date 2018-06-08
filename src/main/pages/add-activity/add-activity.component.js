@@ -3,6 +3,8 @@ import { Content, Button, Text } from 'native-base';
 
 import HabitTag from './components/habit-tag';
 
+import { styles, textStyles } from './add.activity.style';
+
 const tags = [
   {
     name: 'Health',
@@ -55,10 +57,10 @@ export default class AddActivity extends React.Component {
   static navigationOptions = ({ navigation }) => {
     return {
       title: 'Add new habit',
-      headerTitleStyle: { alignSelf: 'center' },
+      headerTitleStyle: styles.title,
       headerRight: (
         <Button transparent onPress={() => navigation.push('AddActivityDetail')}>
-          <Text style={{ color: '#e91e63' }}>CREATE</Text>
+          <Text style={textStyles.themeText}>CREATE</Text>
         </Button>
       )
     };
@@ -66,11 +68,9 @@ export default class AddActivity extends React.Component {
 
   render() {
     return (
-      <React.Fragment>
-        <Content>
-          {tags.map((tag, index) => <HabitTag key={index} name={tag.name} habits={tag.habits} />)}
-        </Content>
-      </React.Fragment>
+      <Content style={styles.container}>
+        {tags.map((tag, index) => <HabitTag key={index} name={tag.name} habits={tag.habits} />)}
+      </Content>
     );
   }
 }

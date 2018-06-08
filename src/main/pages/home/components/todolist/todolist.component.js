@@ -1,18 +1,7 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 
-const styles = StyleSheet.create({
-  container: {
-    margin: 20
-  }
-});
-
-const textStyles = StyleSheet.create({
-  section: {
-    fontSize: 22,
-    fontWeight: 'bold'
-  }
-});
+import { styles, textStyles } from './todolist.style';
 
 export default class TodoList extends React.Component {
   render() {

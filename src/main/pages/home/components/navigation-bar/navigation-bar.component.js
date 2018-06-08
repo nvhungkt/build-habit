@@ -1,19 +1,7 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
 import { Header, Left, Body, Right, Button, Icon, Title } from 'native-base';
 
-const styles = StyleSheet.create({
-  header: {
-    backgroundColor: '#fff',
-    marginTop: 24
-  },
-  appName: {
-    fontSize: 32,
-    fontFamily: "Pacifico",
-    color: '#000',
-    alignSelf: 'center'
-  }
-});
+import { styles } from './navigation-bar.style';
 
 export default class NavigationBar extends React.Component {
   render() {
@@ -28,6 +16,9 @@ export default class NavigationBar extends React.Component {
           <Title style={styles.appName}>Habit</Title>
         </Body>
         <Right style={{ flex: 1 }}>
+          <Button transparent>
+            <Icon style={{color: 'black'}} name='md-calendar' />
+          </Button>
           <Button transparent>
             <Icon style={{color: 'black'}} name='notifications' />
           </Button>

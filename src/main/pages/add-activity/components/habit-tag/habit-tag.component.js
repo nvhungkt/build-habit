@@ -1,21 +1,10 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
 import { Text } from 'native-base';
 
 import HabitTemplate from '../habit-template';
 
-const styles = StyleSheet.create({
-  container: {
-    margin: 20
-  }
-});
-
-const textStyles = StyleSheet.create({
-  section: {
-    fontSize: 20,
-    fontWeight: 'bold'
-  }
-});
+import { styles, textStyles } from './habit-tag.style';
 
 export default class HabitTag extends React.Component {
   render() {

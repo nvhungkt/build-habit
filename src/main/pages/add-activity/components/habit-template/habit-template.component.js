@@ -1,6 +1,6 @@
 import React from 'react';
 import { View } from 'react-native';
-import { Text, Icon, Button } from 'native-base';
+import { Text, Button, Icon } from 'native-base';
 
 import { styles } from './habit-template.style';
 

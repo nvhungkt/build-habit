@@ -1,5 +1,5 @@
 import React from 'react';
-import { Content, Button, Text, Form, Item, Input, Label, Icon, Picker } from 'native-base';
+import { Content, Button, Text, Form, Item, Input, Label, Picker, Icon } from 'native-base';
 import { TimePickerAndroid, DatePickerAndroid, Keyboard, View } from 'react-native';
 
 import { styles, textStyles } from './add-activity-detail.style';

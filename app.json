@@ -1,5 +1,13 @@
 {
   "expo": {
-    "sdkVersion": "27.0.0"
+   "name": "Sexy Habit",
+   "version": "1.0.0",
+   "sdkVersion": "27.0.0",
+   "ios": {
+     "bundleIdentifier": "com.nvhung.sexyhabit"
+   },
+   "android": {
+     "package": "com.nvhung.sexyhabit"
+   }
   }
 }

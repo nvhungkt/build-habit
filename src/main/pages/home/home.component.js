@@ -1,10 +1,16 @@
 import React from 'react';
-import { Tab, Tabs, Content, ScrollableTab } from 'native-base';
+import { DatePickerAndroid } from 'react-native';
+import { Tab, Tabs, Content, ScrollableTab, Drawer } from 'native-base';
 
 import NavigationBar from './components/navigation-bar';
+import SideBar from './components/sidebar';
 import AddNewActivity from './components/add-new-activity';
 import Todo from './components/todo';
 import TodoList from './components/todolist';
+
+import dumbbell from '../../assets/icon/057-dumbbell.png';
+import breakfast from '../../assets/icon/033-breakfast.png';
+import news from '../../assets/icon/043-news.png';
 
 import { styles, textStyles } from './home.style';
 import { formatDate, isYesterday, isToday, isTomorrow } from './home.utility';
@@ -46,11 +52,11 @@ const renderTabs = tabs => {
         heading={tab.heading}>
         <Content>
           <TodoList name='Morning'>
-            <Todo todo='Exercises' times='06:15 - 06:45' status='Done' />
-            <Todo todo='Have breakfast' times='07:00 - 07:20' status='Done' />
+            <Todo todo='Exercises' times='06:15 - 06:45' status='Done' icon={dumbbell}/>
+            <Todo todo='Have breakfast' times='07:00 - 07:20' status='Done' icon={breakfast} />
           </TodoList>
           <TodoList name='Afternoon'>
-            <Todo todo='Readbook' times='13:15 - 14:00' status='Not done' />
+            <Todo todo='Readbook' times='13:15 - 14:00' status='Not done' icon={news} />
           </TodoList>
           <TodoList name='Evening'>
           </TodoList>
@@ -61,28 +67,63 @@ const renderTabs = tabs => {
 };
 
 export default class Home extends React.Component {
-  static navigationOptions = {
-    header: <NavigationBar />
+  static navigationOptions = ({ navigation }) => {
+    const { params = {} } = navigation.state;
+
+    return {
+      header: <NavigationBar openDrawer={params.openDrawer} openDatePicker={params.openDatePicker} />
+    };
   }
 
   constructor(props) {
     super(props);
     this.state = {
-      activePage: 7,
+      activePage: 1,
       currentDate: new Date(),
       tabs: tabList()
     };
   }
 
   componentDidMount() {
+    this.props.navigation.setParams({
+      openDrawer: this.openDrawer,
+      openDatePicker: this.openDatePicker
+    });
+
     setTimeout(() => {
       this.setState({ activePage: 7 });
     }, INTERVAL_TIME);
   }
 
+  async openDatePicker() {
+    try {
+      const { action, year, month, day } = await DatePickerAndroid.open();
+
+      if (action !== DatePickerAndroid.dismissedAction) {
+        const currentDate = new Date(year, month, day);
+
+        this.setState({ currentDate });
+      }
+    } catch (error) {
+      return;
+    }
+  }
+
+  closeDrawer = () => {
+    this.drawer._root.close();
+  };
+
+  openDrawer = () => {
+    this.drawer._root.open();
+  };
+
   render() {
     return (
-      <React.Fragment>
+      <Drawer
+        ref={(ref) => { this.drawer = ref; }}
+        onClose={this.closeDrawer}
+        content={<SideBar />}
+      >
         <Tabs
           style={styles.tab}
           tabBarUnderlineStyle={styles.tabBarUnderLine}
@@ -93,7 +134,7 @@ export default class Home extends React.Component {
           {renderTabs(this.state.tabs)}
         </Tabs>
         <AddNewActivity navigation={this.props.navigation} />
-      </React.Fragment>
+      </Drawer>
     );
   }
 }

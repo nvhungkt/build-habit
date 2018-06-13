@@ -1,26 +1,24 @@
 import React from 'react';
-import { Text, View } from 'react-native';
+import { View, Image } from 'react-native';
+import { Icon, Text } from 'native-base';
 
 import { styles, textStyles } from './todo.style';
 
 export default class Todo extends React.Component {
   render() {
+    const { todo, times, status, icon } = this.props;
+    const done = status === 'Done';
+
     return (
       <View style={styles.container}>
         <View style={styles.content}>
+          {icon && <Image style={styles.icon} source={icon} resizeMode='contain'/>}
           <View style={styles.todo}>
-            <Text style={textStyles.todo}>{this.props.todo}</Text>
-            <Text style={textStyles.times}>{this.props.times}</Text>
+            <Text style={textStyles(done).todo}>{todo}</Text>
+            <Text style={textStyles(done).times}>{times}</Text>
           </View>
           <View style={styles.status}>
-            <Text style={
-              this.props.status === 'Done' ?
-              textStyles.statusDone :
-              textStyles.statusNotDone
-              }
-            >
-              {this.props.status}
-            </Text>
+            <Icon style={textStyles(done).status} name="md-checkmark" />
           </View>
         </View>
       </View>

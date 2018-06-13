@@ -2,7 +2,7 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import { NativeRouter } from 'react-router-native';
 import { Root } from 'native-base';
-import { Font, AppLoading } from 'expo';
+import { Font, AppLoading, Permissions } from 'expo';
 
 import Pacifico from "./assets/font/Pacifico.ttf";
 import Roboto from "native-base/Fonts/Roboto.ttf";
@@ -21,7 +21,7 @@ export default class Main extends React.Component {
     this.state = { loading: true };
   }
 
-  async componentWillMount() {
+  async componentDidMount() {
     await Font.loadAsync({
       Pacifico,
       Roboto,
@@ -29,6 +29,14 @@ export default class Main extends React.Component {
       Roboto_medium: RobotoMedium
     });
     this.setState({ loading: false });
+
+    const { status: existingStatus } = await Permissions.getAsync(
+      Permissions.NOTIFICATIONS
+    );
+
+    if (existingStatus !== 'granted') {
+      await Permissions.askAsync(Permissions.NOTIFICATIONS);
+    }
   }
 
   render() {

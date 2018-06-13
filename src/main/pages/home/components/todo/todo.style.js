@@ -3,15 +3,21 @@ import { StyleSheet } from 'react-native';
 export const styles = StyleSheet.create({
   container: {
     height: 80,
-    borderBottomWidth: 1,
+    borderBottomWidth: 0.5,
     borderBottomColor: '#ccc'
   },
   content: {
     flex: 1,
     flexDirection: 'row'
   },
+  icon: {
+    flex: 2,
+    width: undefined,
+    height: undefined
+  },
   todo: {
     flex: 8,
+    paddingLeft: 20,
     alignSelf: 'center'
   },
   status: {
@@ -21,24 +27,18 @@ export const styles = StyleSheet.create({
   }
 });
 
-export const textStyles = StyleSheet.create({
+export const textStyles = done => ({
   todo: {
-    color: '#424242',
+    color: done ? '#424242' : '#777',
     fontSize: 20,
     fontWeight: 'bold'
   },
   times: {
-    color: '#424242',
+    color: done ? '#424242' : '#777',
     fontSize: 20
   },
-  statusDone: {
-    color: '#64dd17',
-    fontSize: 20,
-    fontWeight: 'bold'
-  },
-  statusNotDone: {
-    color: '#424242',
-    fontSize: 20,
-    fontWeight: 'bold'
+  status: {
+    color: done ? '#64dd17' : '#777',
+    fontSize: 30
   }
 });

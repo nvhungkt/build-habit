@@ -8,9 +8,11 @@ import AddNewActivity from './components/add-new-activity';
 import Todo from './components/todo';
 import TodoList from './components/todolist';
 
-import dumbbell from '../../assets/icon/057-dumbbell.png';
-import breakfast from '../../assets/icon/033-breakfast.png';
-import news from '../../assets/icon/043-news.png';
+// import ICON from '../../assets/icon-index';
+
+import dumbbell from '../../assets/icon/dumbbell.png';
+import breakfast from '../../assets/icon/breakfast.png';
+import news from '../../assets/icon/news.png';
 
 import { styles, textStyles } from './home.style';
 import { formatDate, isYesterday, isToday, isTomorrow } from './home.utility';

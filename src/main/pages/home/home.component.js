@@ -8,11 +8,7 @@ import AddNewActivity from './components/add-new-activity';
 import Todo from './components/todo';
 import TodoList from './components/todolist';
 
-// import ICON from '../../assets/icon-index';
-
-import dumbbell from '../../assets/icon/dumbbell.png';
-import breakfast from '../../assets/icon/breakfast.png';
-import news from '../../assets/icon/news.png';
+import ICON from '../../assets/icon-index';
 
 import { styles, textStyles } from './home.style';
 import { formatDate, isYesterday, isToday, isTomorrow } from './home.utility';
@@ -54,11 +50,11 @@ const renderTabs = tabs => {
         heading={tab.heading}>
         <Content>
           <TodoList name='Morning'>
-            <Todo todo='Exercises' times='06:15 - 06:45' status='Done' icon={dumbbell}/>
-            <Todo todo='Have breakfast' times='07:00 - 07:20' status='Done' icon={breakfast} />
+            <Todo todo='Exercises' times='06:15 - 06:45' status='Done' icon={ICON.IC_DUMBBELL}/>
+            <Todo todo='Have breakfast' times='07:00 - 07:20' status='Done' icon={ICON.IC_BREAKFAST} />
           </TodoList>
           <TodoList name='Afternoon'>
-            <Todo todo='Readbook' times='13:15 - 14:00' status='Not done' icon={news} />
+            <Todo todo='Readbook' times='13:15 - 14:00' status='Not done' icon={ICON.IC_NEWS} />
           </TodoList>
           <TodoList name='Evening'>
           </TodoList>

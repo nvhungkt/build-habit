@@ -8,38 +8,27 @@ import AddNewActivity from './components/add-new-activity';
 import Todo from './components/todo';
 import TodoList from './components/todolist';
 
-import ICON from '../../assets/icon-index';
+import icon from '../../assets/icon-index';
 
 import { styles, textStyles } from './home.style';
 import { formatDate, isYesterday, isToday, isTomorrow } from './home.utility';
 
-const LAST_WEEK = -7;
-const NEXT_WEEK = 7;
+const news = "news";
+
+const DAY_RANGE = 7;
 const INTERVAL_TIME = 0;
 
-const tabList = (inputDate = new Date()) => {
-  const day = inputDate.getDate();
-  const month = inputDate.getMonth();
-  const year = inputDate.getFullYear();
+const renderTabs = (dates) => {
+  return dates.map((item, index) => {
+    const { habits } = item;
+    const { date, month, year } = item.day;
+    const newDate = new Date(year, month - 1, date);
+    let heading = formatDate(newDate);
 
-  const tabs = [];
+    if (isYesterday(newDate)) heading = "Yesterday";
+    if (isToday(newDate)) heading = "Today";
+    if (isTomorrow(newDate)) heading = "Tomorrow";
 
-  for (let i = LAST_WEEK; i <= NEXT_WEEK; i++) {
-    const date = new Date(year, month, day + i);
-    let heading = formatDate(date);
-
-    if (isYesterday(date)) heading = "Yesterday";
-    if (isToday(date)) heading = "Today";
-    if (isTomorrow(date)) heading = "Tomorrow";
-
-    tabs.push({ heading, date });
-  }
-
-  return tabs;
-};
-
-const renderTabs = tabs => {
-  return tabs.map((tab, index) => {
     return (
       <Tab
         key={index}
@@ -47,14 +36,21 @@ const renderTabs = tabs => {
         activeTabStyle={styles.tab}
         textStyle={textStyles.tabText}
         activeTextStyle={textStyles.activeText}
-        heading={tab.heading}>
+        heading={heading}>
         <Content>
           <TodoList name='Morning'>
-            <Todo todo='Exercises' times='06:15 - 06:45' status='Done' icon={ICON.IC_DUMBBELL}/>
-            <Todo todo='Have breakfast' times='07:00 - 07:20' status='Done' icon={ICON.IC_BREAKFAST} />
+            {habits.map((habit, habitIndex) =>
+              <Todo
+                key={habitIndex}
+                todo={habit.title}
+                times={habit.timeRange}
+                done={habit.done}
+                icon={icon[habit.icon]}
+              />
+            )}
           </TodoList>
           <TodoList name='Afternoon'>
-            <Todo todo='Readbook' times='13:15 - 14:00' status='Not done' icon={ICON.IC_NEWS} />
+            <Todo todo='Readbook' times='13:15 - 14:00' status='Not done' icon={icon[news]} />
           </TodoList>
           <TodoList name='Evening'>
           </TodoList>
@@ -77,20 +73,37 @@ export default class Home extends React.Component {
     super(props);
     this.state = {
       activePage: 1,
-      currentDate: new Date(),
-      tabs: tabList()
+      currentDate: new Date()
     };
   }
 
   componentDidMount() {
+    const today = new Date();
+    const day = today.getDate();
+    const month = today.getMonth();
+    const year = today.getFullYear();
+
+    const fromDate = new Date(year, month, day - DAY_RANGE);
+    const toDate = new Date(year, month, day + DAY_RANGE);
+
+    const fromDateStr = `${fromDate.getMonth() + 1}/${fromDate.getDate()}/${fromDate.getFullYear()}`;
+    const toDateStr = `${toDate.getMonth() + 1}/${toDate.getDate()}/${toDate.getFullYear()}`;
+
+    this.props.loadHabits && this.props.loadHabits(fromDateStr, toDateStr);
+
     this.props.navigation.setParams({
       openDrawer: this.openDrawer,
       openDatePicker: this.openDatePicker
     });
+  }
 
-    setTimeout(() => {
-      this.setState({ activePage: 7 });
-    }, INTERVAL_TIME);
+  componentDidUpdate(prevProps) {
+    if (this.props.habits !== prevProps.habits) {
+      // this.setState({ activePage: DAY_RANGE });
+      setTimeout(() => {
+        this.setState({ activePage: DAY_RANGE });
+      }, INTERVAL_TIME);
+    }
   }
 
   async openDatePicker() {
@@ -129,7 +142,7 @@ export default class Home extends React.Component {
           onChangeTab={this.handleChangeTab}
           renderTabBar={() => <ScrollableTab />}
         >
-          {renderTabs(this.state.tabs)}
+          {renderTabs(this.props.habits)}
         </Tabs>
         <AddNewActivity navigation={this.props.navigation} />
       </Drawer>

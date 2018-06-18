@@ -1,5 +1,6 @@
 import { applyMiddleware, createStore, combineReducers } from 'redux';
-import { apiMiddleware } from 'redux-api-middleware';
+// import { apiMiddleware } from 'redux-api-middleware';
+import apiMiddleware from 'redux-native-api-middleware';
 import { routerReducer } from 'react-router-redux';
 
 const createStoreWithMiddleware = applyMiddleware(apiMiddleware)(createStore);

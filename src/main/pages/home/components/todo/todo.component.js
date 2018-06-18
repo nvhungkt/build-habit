@@ -6,8 +6,7 @@ import { styles, textStyles } from './todo.style';
 
 export default class Todo extends React.Component {
   render() {
-    const { todo, times, status, icon } = this.props;
-    const done = status === 'Done';
+    const { todo, times, done, icon } = this.props;
 
     return (
       <View style={styles.container}>

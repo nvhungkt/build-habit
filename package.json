@@ -18,12 +18,14 @@
     "eject": "react-native-scripts eject",
     "android": "react-native-scripts android",
     "ios": "react-native-scripts ios",
+    "build-apk": "exp build:android",
     "test": "jest"
   },
   "jest": {
     "preset": "jest-expo"
   },
   "dependencies": {
+    "@yasaichi/redux-api-middleware": "^2.0.1",
     "expo": "27.0.1",
     "native-base": "2.4.5",
     "react": "16.3.1",
@@ -35,6 +37,7 @@
     "react-router-redux": "4.0.8",
     "redux": "4.0.0",
     "redux-api-middleware": "2.3.0",
+    "redux-native-api-middleware": "^1.0.2",
     "reselect": "3.0.1"
   }
 }

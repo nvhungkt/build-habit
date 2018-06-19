@@ -12,20 +12,20 @@ export const convertHabitDetail = (habit) => {
   let scheduler = 'Every ';
   switch (repetition) {
       case HABIT_REPETITION.WEEKLY:
-        scheduler += ' week on ';
-        times.forEach(element, index => {
+        scheduler += 'week on ';
+        times.forEach((element, index) => {
           scheduler += element.day + ", ";
         });
         break;
       case HABIT_REPETITION.MONTHLY:
-        scheduler += ' month on ';
-        times.forEach(element, index => {
+        scheduler += 'month on ';
+        times.forEach((element, index) => {
             scheduler += element.date + ", ";
         });
         break;
       case HABIT_REPETITION.YEARLY:
-        scheduler += ' year on ';
-        times.forEach(element, index => {
+        scheduler += 'year on ';
+        times.forEach((element, index) => {
             scheduler += element.date + "-" + month[element.month] + ", ";
         });
         break;

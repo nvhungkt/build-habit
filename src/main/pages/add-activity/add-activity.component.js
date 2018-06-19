@@ -3,7 +3,7 @@ import { Content, Button, Text } from 'native-base';
 
 import HabitTag from './components/habit-tag';
 
-import { styles, textStyles } from './add.activity.style';
+import { styles, textStyles } from './add-activity.style';
 
 const tags = [
   {

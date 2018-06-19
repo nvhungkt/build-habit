@@ -12,10 +12,10 @@ export const styles = StyleSheet.create({
 export const textStyles = StyleSheet.create({
   tabText: {
     color: 'black',
-    fontSize: 17
+    fontSize: 18
   },
   activeText: {
     color: '#e91e63',
-    fontSize: 20
+    fontSize: 22
   }
 });

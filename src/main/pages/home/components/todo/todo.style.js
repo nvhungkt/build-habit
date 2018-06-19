@@ -39,6 +39,6 @@ export const textStyles = done => ({
   },
   status: {
     color: done ? '#64dd17' : '#777',
-    fontSize: 30
+    fontSize: 34
   }
 });

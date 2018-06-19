@@ -32,10 +32,10 @@ export const styles = StyleSheet.create({
 export const textStyles = StyleSheet.create({
   dateActive: {
     color: '#e91e63',
-    fontSize: 13
+    fontSize: 12
   },
   dateNotActive: {
     color: '#999',
-    fontSize: 13
+    fontSize: 12
   }
 });

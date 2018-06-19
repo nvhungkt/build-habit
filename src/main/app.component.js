@@ -4,19 +4,23 @@ import { Container } from 'native-base';
 import { createStackNavigator } from 'react-navigation';
 
 import { store } from '../store';
+import { HOME_STORE, DETAIL_STORE } from './constant/store';
 
 import Home from './pages/home';
+import Detail from './pages/detail';
 import AddActivity from './pages/add-activity';
 import AddActivityDetail from './pages/add-activity-detail';
 
 import { homeReducer } from './pages/home/home.reducer';
-
-const HOME_STORE = 'HOME_STORE';
+import { detailReducer } from './pages/detail/detail.reducer';
 
 const RootStack = createStackNavigator(
   {
     Home: {
       screen: Home
+    },
+    Detail: {
+      screen: Detail
     },
     AddActivity: {
       screen: AddActivity
@@ -45,6 +49,7 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     store.injectReducer(HOME_STORE, homeReducer);
+    store.injectReducer(DETAIL_STORE, detailReducer);
   }
   render() {
     return (

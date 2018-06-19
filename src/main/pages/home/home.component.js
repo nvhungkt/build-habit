@@ -8,7 +8,7 @@ import AddNewActivity from './components/add-new-activity';
 import Todo from './components/todo';
 import TodoList from './components/todolist';
 
-import icon from '../../assets/icon-index';
+import icons from '../../assets/icon-index';
 
 import { styles, textStyles } from './home.style';
 import { formatDate, isYesterday, isToday, isTomorrow } from './home.utility';
@@ -17,12 +17,13 @@ const news = "news";
 
 const DAY_RANGE = 7;
 const INTERVAL_TIME = 0;
+const MONTH_GAP = 1;
 
-const renderTabs = (dates) => {
+const renderTabs = (dates, { navigation, loadHabitDetail }) => {
   return dates.map((item, index) => {
     const { habits } = item;
     const { date, month, year } = item.day;
-    const newDate = new Date(year, month - 1, date);
+    const newDate = new Date(year, month - MONTH_GAP, date);
     let heading = formatDate(newDate);
 
     if (isYesterday(newDate)) heading = "Yesterday";
@@ -42,15 +43,18 @@ const renderTabs = (dates) => {
             {habits.map((habit, habitIndex) =>
               <Todo
                 key={habitIndex}
+                loadHabitDetail={loadHabitDetail}
+                habitId={habit.id}
                 todo={habit.title}
                 times={habit.timeRange}
                 done={habit.done}
-                icon={icon[habit.icon]}
+                icon={icons[habit.icon]}
+                navigation={navigation}
               />
             )}
           </TodoList>
           <TodoList name='Afternoon'>
-            <Todo todo='Readbook' times='13:15 - 14:00' status='Not done' icon={icon[news]} />
+            <Todo todo='Readbook' times='13:15 - 14:00' status='Not done' icon={icons[news]} />
           </TodoList>
           <TodoList name='Evening'>
           </TodoList>
@@ -86,8 +90,8 @@ export default class Home extends React.Component {
     const fromDate = new Date(year, month, day - DAY_RANGE);
     const toDate = new Date(year, month, day + DAY_RANGE);
 
-    const fromDateStr = `${fromDate.getMonth() + 1}/${fromDate.getDate()}/${fromDate.getFullYear()}`;
-    const toDateStr = `${toDate.getMonth() + 1}/${toDate.getDate()}/${toDate.getFullYear()}`;
+    const fromDateStr = `${fromDate.getMonth() + MONTH_GAP}/${fromDate.getDate()}/${fromDate.getFullYear()}`;
+    const toDateStr = `${toDate.getMonth() + MONTH_GAP}/${toDate.getDate()}/${toDate.getFullYear()}`;
 
     this.props.loadHabits && this.props.loadHabits(fromDateStr, toDateStr);
 
@@ -129,6 +133,8 @@ export default class Home extends React.Component {
   };
 
   render() {
+    const { habits, navigation, loadHabitDetail } = this.props;
+
     return (
       <Drawer
         ref={(ref) => { this.drawer = ref; }}
@@ -142,7 +148,7 @@ export default class Home extends React.Component {
           onChangeTab={this.handleChangeTab}
           renderTabBar={() => <ScrollableTab />}
         >
-          {renderTabs(this.props.habits)}
+          {renderTabs(habits, { navigation, loadHabitDetail })}
         </Tabs>
         <AddNewActivity navigation={this.props.navigation} />
       </Drawer>

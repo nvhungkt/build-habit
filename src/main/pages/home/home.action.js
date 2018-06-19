@@ -8,13 +8,6 @@ export const LOAD_HABITS_FAILURE = 'LOAD_HABITS_FAILURE';
 export const LOAD_HABITS_ERROR = 'LOAD_HABITS_ERROR';
 
 const getHabits = (fromDate, toDate) => {
-  const data = new FormData();
-
-  data.append('username', 'hungnv');
-  data.append('from', fromDate);
-  data.append('to', toDate);
-  data.append('offsetMillis', '25200000');
-
   return {
     [API_REQUEST]: {
       url: `${getByDate}?username=hungnv&from=${fromDate}&to=${toDate}&offsetMillis=25200000`,

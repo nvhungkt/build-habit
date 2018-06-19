@@ -1,5 +1,15 @@
 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
+const days = {
+  "mon": "Monday",
+  "tue": "Tuesday",
+  "wed": "Wednesday",
+  "thu": "Thursday",
+  "fri": "Friday",
+  "sat": "Saturday",
+  "sun": "Sunday"
+}
+
 const HABIT_REPETITION = {
     "WEEKLY": "weekly",
     "MONTHLY": "monthly",
@@ -14,7 +24,7 @@ export const convertHabitDetail = (habit) => {
       case HABIT_REPETITION.WEEKLY:
         scheduler += 'week on ';
         times.forEach((element, index) => {
-          scheduler += element.day + ", ";
+          scheduler += days[element.day] + ", ";
         });
         break;
       case HABIT_REPETITION.MONTHLY:
@@ -32,10 +42,23 @@ export const convertHabitDetail = (habit) => {
       default:
         break;
   }
+  scheduler = scheduler.replace(/, $/g, "");
 
-  let timeRange = from.hour + ':' + from.minute 
+  let timeRange = convertDailyTimePoint(from) 
     + ' - '
-    + to.hour + ':' + to.minute;
+    + convertDailyTimePoint(to);
 
   return { title, description, icon, scheduler, timeRange };
+}
+
+const convertDailyTimePoint = (dailyTimePoint) => {
+  const round = (number) => {
+    let prefix = "";
+    if (number < 10) {
+      prefix = "0";
+    }
+    return prefix + number;
+  }
+
+  return round(dailyTimePoint.hour) + ":" + round(dailyTimePoint.minute);
 }

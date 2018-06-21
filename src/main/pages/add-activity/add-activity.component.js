@@ -10,13 +10,16 @@ const tags = [
     name: 'Health',
     habits: [
       {
-        name: 'Do exercies'
+        title: 'Do exercies',
+        icon: 'dumbbell-single'
       },
       {
-        name: 'Have fruits before meal'
+        title: 'Have fruits before meal',
+        icon: 'avocado'
       },
       {
-        name: 'Go to bed early'
+        title: 'Go to bed early',
+        icon: 'bed'
       }
     ]
   },
@@ -24,16 +27,20 @@ const tags = [
     name: 'Study',
     habits: [
       {
-        name: 'Read books'
+        title: 'Read books',
+        icon: 'news'
       },
       {
-        name: 'Learn English'
+        title: 'Learn English',
+        icon: 'check-list'
       },
       {
-        name: 'Listen to records'
+        title: 'Listen to records',
+        icon: 'radio'
       },
       {
-        name: 'Practice with homeworks'
+        title: 'Practice with homeworks',
+        icon: 'healthcare-heart'
       }
     ]
   },
@@ -41,13 +48,16 @@ const tags = [
     name: 'Work',
     habits: [
       {
-        name: 'Pomodoro Technique'
+        title: 'Pomodoro Technique',
+        icon: 'tomato'
       },
       {
-        name: 'Listen to music'
+        title: 'Listen to music',
+        icon: 'radio'
       },
       {
-        name: 'Meet up with other people'
+        title: 'Meet up with other people',
+        icon: 'shirt'
       }
     ]
   }

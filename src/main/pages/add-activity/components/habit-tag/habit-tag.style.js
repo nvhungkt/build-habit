@@ -8,7 +8,9 @@ export const styles = StyleSheet.create({
 
 export const textStyles = StyleSheet.create({
   section: {
-    fontSize: 20,
-    fontWeight: 'bold'
+    fontSize: 16,
+    marginBottom: 10,
+    fontWeight: 'bold',
+    color: '#009688'
   }
 });

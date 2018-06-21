@@ -11,7 +11,9 @@ export default class HabitTag extends React.Component {
     return (
       <View style={styles.container}>
         <Text style={textStyles.section}>{this.props.name}</Text>
-        {this.props.habits.map((habit, index) => <HabitTemplate name={habit.name} key={index} />)}
+        {this.props.habits.map((habit, index) =>
+          <HabitTemplate title={habit.title} icon={habit.icon} key={index} />
+        )}
       </View>
     );
   }

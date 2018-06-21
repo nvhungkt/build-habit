@@ -8,57 +8,53 @@ const days = {
   "fri": "Friday",
   "sat": "Saturday",
   "sun": "Sunday"
-}
+};
 
 const HABIT_REPETITION = {
-    "WEEKLY": "weekly",
-    "MONTHLY": "monthly",
-    "YEARLY": "yearly"
-}
+  "WEEKLY": "weekly",
+  "MONTHLY": "monthly",
+  "YEARLY": "yearly"
+};
 
-export const convertHabitDetail = (habit) => {
-  let {title, description, icon, schedule} = habit;
-  let { repetition, times, from, to } = schedule;
-  let scheduler = 'Every ';
-  switch (repetition) {
-      case HABIT_REPETITION.WEEKLY:
-        scheduler += 'week on ';
-        times.forEach((element, index) => {
-          scheduler += days[element.day] + ", ";
-        });
-        break;
-      case HABIT_REPETITION.MONTHLY:
-        scheduler += 'month on ';
-        times.forEach((element, index) => {
-            scheduler += element.date + ", ";
-        });
-        break;
-      case HABIT_REPETITION.YEARLY:
-        scheduler += 'year on ';
-        times.forEach((element, index) => {
-            scheduler += element.date + "-" + month[element.month] + ", ";
-        });
-        break;
-      default:
-        break;
-  }
-  scheduler = scheduler.replace(/, $/g, "");
-
-  let timeRange = convertDailyTimePoint(from) 
-    + ' - '
-    + convertDailyTimePoint(to);
-
-  return { title, description, icon, scheduler, timeRange };
-}
+const DECIMAL = 10;
 
 const convertDailyTimePoint = (dailyTimePoint) => {
   const round = (number) => {
     let prefix = "";
-    if (number < 10) {
+
+    if (number < DECIMAL) {
       prefix = "0";
     }
+
     return prefix + number;
+  };
+
+  return `${round(dailyTimePoint.hour)}:${round(dailyTimePoint.minute)}`;
+};
+
+export const convertHabitDetail = (habit) => {
+  const { title, description, icon, schedule } = habit;
+  const { repetition, times, from, to } = schedule;
+  let scheduler = 'Every ';
+
+  switch (repetition) {
+    case HABIT_REPETITION.WEEKLY:
+      scheduler += 'week on ';
+      scheduler += times.map(element => days[element.day]).join(', ');
+      break;
+    case HABIT_REPETITION.MONTHLY:
+      scheduler += 'month on ';
+      scheduler += times.map(element => element.day).join(', ');
+      break;
+    case HABIT_REPETITION.YEARLY:
+      scheduler += 'year on ';
+      scheduler += times.map(element => `${element.date}-${months[element.month]}`).join(', ');
+      break;
+    default:
+      break;
   }
 
-  return round(dailyTimePoint.hour) + ":" + round(dailyTimePoint.minute);
-}
+  const timeRange = `${convertDailyTimePoint(from)} - ${convertDailyTimePoint(to)}`;
+
+  return { title, description, icon, scheduler, timeRange };
+};

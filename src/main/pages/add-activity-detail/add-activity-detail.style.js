@@ -2,40 +2,84 @@ import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#fff'
+    backgroundColor: '#fff',
+    padding: 36
   },
-  form: {
-    paddingRight: 20,
-    paddingBottom: 20
+  habitIcon: {
+    flex: 1,
+    alignItems: 'center'
   },
-  input: {
-    marginTop: 2
+  iconImage: {
+    width: 100,
+    height: 100
   },
   row: {
     flex: 1,
     flexDirection: 'row',
-    height: 50,
-    alignItems: 'stretch'
+    alignItems: 'stretch',
+    marginBottom: 10
+  },
+  iconTop: {
+    paddingTop: 15,
+    flex: 1,
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start'
+  },
+  iconCenter: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'flex-start'
+  },
+  iconBottom: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    alignItems: 'flex-start'
+  },
+  icon: {
+    color: '#009688'
+  },
+  input: {
+    marginTop: 2
+  },
+  text: {
+    flex: 7
+  },
+  timePicker: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingTop: 15
+  },
+  dateButton: {
+    flex: 1,
+    paddingTop: 10,
+    paddingBottom: 10,
+    alignItems: 'center'
+  },
+  form: {
+    paddingRight: 20,
+    paddingBottom: 20
   },
   scheduler: {
     flex: 6,
     paddingLeft: 20,
     alignSelf: 'center',
     color: '#999'
-  },
-  icon: {
-    flex: 1,
-    justifyContent: 'center'
   }
 });
 
 export const textStyles = StyleSheet.create({
+  timeTitle: {
+    fontSize: 18
+  },
+  time: {
+    fontSize: 22
+  },
   dateActive: {
-    color: '#e91e63',
-    fontSize: 12
+    color: '#e91e63'
   },
   dateNotActive: {
-    color: '#999',
-    fontSize: 12
+    color: '#999'
   }
 });

@@ -4,7 +4,7 @@ import { Container } from 'native-base';
 import { createStackNavigator } from 'react-navigation';
 
 import { store } from '../store';
-import { HOME_STORE, DETAIL_STORE } from './constant/store';
+import { HOME_STORE, DETAIL_STORE, ADD_ACTIVITY_DETAIL_STORE } from './constant/store';
 
 import Home from './pages/home';
 import Detail from './pages/detail';
@@ -13,6 +13,7 @@ import AddActivityDetail from './pages/add-activity-detail';
 
 import { homeReducer } from './pages/home/home.reducer';
 import { detailReducer } from './pages/detail/detail.reducer';
+import { addActivityDetailReducer } from './pages/add-activity-detail/add-activity-detail.reducer';
 
 const RootStack = createStackNavigator(
   {
@@ -50,6 +51,7 @@ export default class App extends React.Component {
     super(props);
     store.injectReducer(HOME_STORE, homeReducer);
     store.injectReducer(DETAIL_STORE, detailReducer);
+    store.injectReducer(ADD_ACTIVITY_DETAIL_STORE, addActivityDetailReducer);
   }
   render() {
     return (

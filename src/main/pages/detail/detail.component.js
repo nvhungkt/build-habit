@@ -5,6 +5,7 @@ import { Content, Button, Text, Icon } from 'native-base';
 import icons from '../../assets/icon-index';
 
 import { styles, textStyles } from './detail.style';
+import { convertHabitDetail } from './detail.utility';
 
 // const habit = {
 //   title: 'Have breakfast',
@@ -37,7 +38,7 @@ export default class Detail extends React.Component {
   }
 
   render() {
-    const { habit } = this.props;
+    const habit = this.props.habit.schedule ? convertHabitDetail(this.props.habit) : {};
 
     return (
       <React.Fragment>

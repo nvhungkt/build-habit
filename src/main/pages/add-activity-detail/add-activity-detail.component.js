@@ -1,6 +1,9 @@
 import React from 'react';
-import { Content, Button, Text, Form, Item, Input, Label, Icon, Picker } from 'native-base';
-import { TimePickerAndroid, DatePickerAndroid, Keyboard, View } from 'react-native';
+import { Content, Button, Text, Item, Input, Label, Icon, Picker } from 'native-base';
+import { TimePickerAndroid, DatePickerAndroid, View, Modal, Image, TouchableOpacity } from 'react-native';
+
+import icons from '../../assets/icon-index';
+import IconChoosingModal from './components/icon-choosing-modal';
 
 import { styles, textStyles } from './add-activity-detail.style';
 
@@ -16,19 +19,24 @@ const ARRAY_STEP = 1;
 const WEEKLY = 'WEEKLY';
 const MONTHLY = 'MONTHLY';
 const YEARLY = 'YEARLY';
+const ON_TIME = 0;
 
 export default class AddActivityDetail extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      title: '',
+      description: '',
+      icon: '',
       startHour: null,
       startMinute: null,
       endHour: null,
       endMinute: null,
       yearlyDate: null,
       mode: WEEKLY,
-      scheduler: datesOfWeek
+      scheduler: datesOfWeek,
+      iconChoosingModal: false
     };
   }
 
@@ -73,6 +81,45 @@ export default class AddActivityDetail extends React.Component {
     }
   }
 
+  onAddActivity = () => {
+    // const {
+    //   title,
+    //   description,
+    //   icon,
+    //   startHour,
+    //   startMinute,
+    //   endHour,
+    //   endMinute,
+    //   yearlyDate,
+    //   scheduler,
+    //   mode
+    // } = this.state;
+
+    // const schedule = {
+    //   from: {
+    //     hour: startHour,
+    //     minute: startMinute
+    //   },
+    //   to: {
+    //     hour: endHour,
+    //     minute: endMinute
+    //   },
+    //   repetition: mode,
+    //   times: scheduler,
+    //   reminders: [ON_TIME]
+    // };
+  }
+
+  onOpenIconChoosingModal = () => this.setState({ iconChoosingModal: true });
+
+  onCloseIconChoosingModal = () => this.setState({ iconChoosingModal: false });
+
+  onChooseIcon = icon => this.setState({ icon, iconChoosingModal: false });
+
+  onChangeHabit = title => this.setState({ title });
+
+  onChangeNotes = description => this.setState({ description });
+
   toggleScheduler = date => {
     const { scheduler } = this.state;
     const dateInScheduler = scheduler.indexOf(date);
@@ -111,12 +158,23 @@ export default class AddActivityDetail extends React.Component {
   }
 
   render() {
-    const { startHour, startMinute, endHour, endMinute, scheduler, mode } = this.state;
+    const {
+      title,
+      description,
+      icon,
+      startHour,
+      startMinute,
+      endHour,
+      endMinute,
+      yearlyDate,
+      scheduler,
+      mode,
+      iconChoosingModal
+    } = this.state;
 
     const renderDateButton = (date, index) => (
-      <Button
-        transparent
-        style={styles.icon}
+      <TouchableOpacity
+        style={styles.dateButton}
         onPress={() => this.toggleScheduler(date)}
         key={index}
       >
@@ -129,16 +187,14 @@ export default class AddActivityDetail extends React.Component {
         >
           {date}
         </Text>
-      </Button>
+      </TouchableOpacity>
     );
 
-    const renderDatesOfWeek = () => {
-      return (
-        <View style={styles.row}>
-          {datesOfWeek.map((dateOfWeek, index) => renderDateButton(dateOfWeek, index))}
-        </View>
-      );
-    };
+    const renderDatesOfWeek = () => (
+      <View style={styles.row}>
+        {datesOfWeek.map((dateOfWeek, index) => renderDateButton(dateOfWeek, index))}
+      </View>
+    );
 
     const renderDatesOfMonth = () => {
       const datesOfMonth = [];
@@ -169,67 +225,99 @@ export default class AddActivityDetail extends React.Component {
       );
     };
 
+    const renderDateInput = () => (
+      <View style={styles.row}>
+        <View style={styles.iconTop}>
+          <Icon style={styles.icon} name='md-calendar' />
+        </View>
+        <View style={styles.text}>
+          <TouchableOpacity
+            style={styles.timePicker}
+            onPress={() => this.openDatePickerYearly()}
+          >
+            <Text style={textStyles.timeTitle}>Every</Text>
+            <Text style={textStyles.time}>{yearlyDate ? `${yearlyDate.getDate()}/${yearlyDate.getMonth()}` : ''}</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    );
+
     return (
       <Content style={styles.container}>
+        <TouchableOpacity style={styles.habitIcon} onPress={this.onOpenIconChoosingModal}>
+          <Image style={styles.iconImage} source={icons[icon || 'breakfast']} resizeMode='contain' />
+        </TouchableOpacity>
+        <Modal
+          animationType="slide"
+          transparent={false}
+          visible={iconChoosingModal}
+          onRequestClose={this.onCloseIconChoosingModal}
+        >
+          <IconChoosingModal onChooseIcon={this.onChooseIcon} />
+        </Modal>
 
         <View style={styles.row}>
-          <Text style={styles.scheduler}>{scheduler.join(', ')}</Text>
-          {
-            mode === YEARLY ?
-              <Button
-                transparent
-                style={styles.icon}
-                onPress={() => this.openDatePickerYearly()}
-              >
-                <Icon style={{ color: '#e91e63' }} name='md-calendar' />
-              </Button> :
-              null
-          }
+          <View style={styles.iconBottom}>
+            <Icon style={styles.icon} name='md-create' />
+          </View>
+          <Item style={styles.text} floatingLabel>
+            <Label style={styles.input}>Habit</Label>
+            <Input onChangeText={this.onChangeHabit} value={title} />
+          </Item>
         </View>
 
-        <Form style={styles.form}>
-          <Item floatingLabel>
-            <Label style={styles.input}>Habit</Label>
-            <Input />
+        <View style={styles.row}>
+          <View style={styles.iconBottom}>
+            <Icon style={styles.icon} name='md-list' />
+          </View>
+          <Item style={styles.text} floatingLabel>
+            <Label style={styles.input}>Notes</Label>
+            <Input onChangeText={this.onChangeNotes} value={description} />
           </Item>
+        </View>
 
-          <Item floatingLabel>
-            <Label style={styles.input}>Start time</Label>
-            <Input
-              onFocus={() => {
-                Keyboard.dismiss();
-                this.openTimePicker('startHour', 'startMinute');
-              }}
-              value={startHour ? `${startHour}:${startMinute}` : ''}
-            />
-          </Item>
+        <View style={styles.row}>
+          <View style={styles.iconTop}>
+            <Icon style={styles.icon} name='md-alarm' />
+          </View>
+          <View style={styles.text}>
+            <TouchableOpacity
+              style={styles.timePicker}
+              onPress={() => this.openTimePicker('startHour', 'startMinute')}
+            >
+              <Text style={textStyles.timeTitle}>Start Time</Text>
+              <Text style={textStyles.time}>{startHour ? `${startHour}:${startMinute}` : ''}</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.timePicker}
+              onPress={() => this.openTimePicker('endHour', 'endMinute')}
+            >
+              <Text style={textStyles.timeTitle}>End Time</Text>
+              <Text style={textStyles.time}>{endHour ? `${endHour}:${endMinute}` : ''}</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
 
-          <Item floatingLabel>
-            <Label style={styles.input}>End time</Label>
-            <Input
-              onFocus={() => {
-                Keyboard.dismiss();
-                this.openTimePicker('endHour', 'endMinute');
-              }}
-              value={endHour ? `${endHour}:${endMinute}` : ''}
-            />
-          </Item>
-
-          <View style={{ marginLeft: 10, marginTop: 20 }}>
+        <View style={styles.row}>
+          <View style={styles.iconCenter}>
+            <Icon style={styles.icon} name='md-refresh' />
+          </View>
+          <View style={styles.text}>
             <Picker
               mode="dialog"
               selectedValue={mode}
               onValueChange={this.changeMode}
-            >
+              >
               <Picker.Item label="Weekly" value={WEEKLY} />
               <Picker.Item label="Monthly" value={MONTHLY} />
               <Picker.Item label="Yearly" value={YEARLY} />
             </Picker>
           </View>
-        </Form>
+        </View>
 
         {mode === WEEKLY ? renderDatesOfWeek() : null}
         {mode === MONTHLY ? renderDatesOfMonth() : null}
+        {mode === YEARLY ? renderDateInput() : null}
       </Content>
     );
   }

@@ -1,6 +1,6 @@
 import React from 'react';
 import { DatePickerAndroid } from 'react-native';
-import { Tab, Tabs, Content, ScrollableTab, Drawer } from 'native-base';
+import { Tab, Tabs, Content, ScrollableTab, Drawer, Text } from 'native-base';
 
 import NavigationBar from './components/navigation-bar';
 import SideBar from './components/sidebar';
@@ -8,12 +8,8 @@ import AddNewActivity from './components/add-new-activity';
 import Todo from './components/todo';
 import TodoList from './components/todolist';
 
-import icons from '../../assets/icon-index';
-
 import { styles, textStyles } from './home.style';
 import { formatDate, isYesterday, isToday, isTomorrow } from './home.utility';
-
-const news = "news";
 
 const DAY_RANGE = 7;
 const INTERVAL_TIME = 0;
@@ -48,13 +44,12 @@ const renderTabs = (dates, { navigation, loadHabitDetail }) => {
                 todo={habit.title}
                 times={habit.timeRange}
                 done={habit.done}
-                icon={icons[habit.icon]}
+                icon={habit.icon}
                 navigation={navigation}
               />
             )}
           </TodoList>
           <TodoList name='Afternoon'>
-            <Todo todo='Readbook' times='13:15 - 14:00' status='Not done' icon={icons[news]} />
           </TodoList>
           <TodoList name='Evening'>
           </TodoList>
@@ -77,7 +72,7 @@ export default class Home extends React.Component {
     super(props);
     this.state = {
       activePage: 1,
-      currentDate: new Date()
+      debug: ''
     };
   }
 
@@ -97,13 +92,12 @@ export default class Home extends React.Component {
 
     this.props.navigation.setParams({
       openDrawer: this.openDrawer,
-      openDatePicker: this.openDatePicker
+      openDatePicker: () => this.openDatePicker()
     });
   }
 
   componentDidUpdate(prevProps) {
     if (this.props.habits !== prevProps.habits) {
-      // this.setState({ activePage: DAY_RANGE });
       setTimeout(() => {
         this.setState({ activePage: DAY_RANGE });
       }, INTERVAL_TIME);
@@ -115,9 +109,13 @@ export default class Home extends React.Component {
       const { action, year, month, day } = await DatePickerAndroid.open();
 
       if (action !== DatePickerAndroid.dismissedAction) {
-        const currentDate = new Date(year, month, day);
+        const fromDate = new Date(year, month, day - DAY_RANGE);
+        const toDate = new Date(year, month, day + DAY_RANGE);
 
-        this.setState({ currentDate });
+        const fromDateStr = `${fromDate.getMonth() + MONTH_GAP}/${fromDate.getDate()}/${fromDate.getFullYear()}`;
+        const toDateStr = `${toDate.getMonth() + MONTH_GAP}/${toDate.getDate()}/${toDate.getFullYear()}`;
+
+        this.props.loadHabits(fromDateStr, toDateStr);
       }
     } catch (error) {
       return;
@@ -150,6 +148,7 @@ export default class Home extends React.Component {
         >
           {renderTabs(habits, { navigation, loadHabitDetail })}
         </Tabs>
+        <Text>{this.state.debug}</Text>
         <AddNewActivity navigation={this.props.navigation} />
       </Drawer>
     );

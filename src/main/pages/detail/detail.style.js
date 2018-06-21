@@ -56,6 +56,7 @@ export const textStyles = StyleSheet.create({
     marginLeft: 50,
     marginRight: 50,
     marginTop: 20,
+    textAlign: 'center',
     color: '#999'
   },
   time: {

@@ -10,7 +10,7 @@ export const LOAD_HABITS_ERROR = 'LOAD_HABITS_ERROR';
 const getHabits = (fromDate, toDate) => {
   return {
     [API_REQUEST]: {
-      url: `${getByDate}?username=hungnv&from=${fromDate}&to=${toDate}&offsetMillis=25200000`,
+      url: `${getByDate}?username=hungnv&from=${fromDate}&to=${toDate}&offsetMillis=${getOffsetMillis()}`,
       method: 'GET',
       action: {
         success: LOAD_HABITS_SUCCESS,

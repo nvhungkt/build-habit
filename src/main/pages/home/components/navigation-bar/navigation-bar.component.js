@@ -23,7 +23,7 @@ const pushNotification = () => {
   };
   let t = new Date();
 
-  t.setSeconds(t.getSeconds() + 30);
+  t.setSeconds(t.getSeconds() + 300);
 
   const schedulingOptions = {
     time: t
@@ -50,7 +50,7 @@ export default class NavigationBar extends React.Component {
           <Button transparent onPress={this.props.openDatePicker}>
             <Icon style={{color: 'black'}} name='md-calendar' />
           </Button>
-          <Button transparent onPress={pushNotification}>
+          <Button transparent onPress={() => this.props.navigation.push('Notifications')}>
             <Icon style={{color: 'black'}} name='notifications' />
           </Button>
         </Right>

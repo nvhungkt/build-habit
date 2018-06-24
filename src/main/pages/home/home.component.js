@@ -1,6 +1,6 @@
 import React from 'react';
-import { DatePickerAndroid } from 'react-native';
-import { Tab, Tabs, Content, ScrollableTab, Drawer, Text } from 'native-base';
+import { DatePickerAndroid, View } from 'react-native';
+import { Tab, Tabs, Content, ScrollableTab, Drawer, Text, Toast } from 'native-base';
 
 import NavigationBar from './components/navigation-bar';
 import SideBar from './components/sidebar';
@@ -12,8 +12,9 @@ import { styles, textStyles } from './home.style';
 import { formatDate, isYesterday, isToday, isTomorrow } from './home.utility';
 
 const DAY_RANGE = 7;
-const INTERVAL_TIME = 0;
+const INTERVAL_TIME = 50;
 const MONTH_GAP = 1;
+const TOAST_DURATION = 3000;
 
 const renderTabs = (dates, { navigation, loadHabitDetail }) => {
   return dates.map((item, index) => {
@@ -49,10 +50,7 @@ const renderTabs = (dates, { navigation, loadHabitDetail }) => {
               />
             )}
           </TodoList>
-          <TodoList name='Afternoon'>
-          </TodoList>
-          <TodoList name='Evening'>
-          </TodoList>
+          <View style={styles.veryEnd}></View>
         </Content>
       </Tab>
     );
@@ -64,7 +62,11 @@ export default class Home extends React.Component {
     const { params = {} } = navigation.state;
 
     return {
-      header: <NavigationBar openDrawer={params.openDrawer} openDatePicker={params.openDatePicker} />
+      header: <NavigationBar
+                navigation={navigation}
+                openDrawer={params.openDrawer}
+                openDatePicker={params.openDatePicker}
+              />
     };
   }
 
@@ -72,23 +74,14 @@ export default class Home extends React.Component {
     super(props);
     this.state = {
       activePage: 1,
-      debug: ''
+      debug: null
     };
   }
 
   componentDidMount() {
     const today = new Date();
-    const day = today.getDate();
-    const month = today.getMonth();
-    const year = today.getFullYear();
 
-    const fromDate = new Date(year, month, day - DAY_RANGE);
-    const toDate = new Date(year, month, day + DAY_RANGE);
-
-    const fromDateStr = `${fromDate.getMonth() + MONTH_GAP}/${fromDate.getDate()}/${fromDate.getFullYear()}`;
-    const toDateStr = `${toDate.getMonth() + MONTH_GAP}/${toDate.getDate()}/${toDate.getFullYear()}`;
-
-    this.props.loadHabits && this.props.loadHabits(fromDateStr, toDateStr);
+    this.loadHomePage(today);
 
     this.props.navigation.setParams({
       openDrawer: this.openDrawer,
@@ -102,6 +95,21 @@ export default class Home extends React.Component {
         this.setState({ activePage: DAY_RANGE });
       }, INTERVAL_TIME);
     }
+
+    if (this.props.success !== prevProps.success) {
+      if (this.props.success) {
+        Toast.show({
+          text: this.props.activityStatus,
+          buttonText: 'Okay',
+          duration: TOAST_DURATION,
+          type: 'success',
+          onClose: () => {
+            this.props.resetStatus();
+            this.loadHomePage(new Date());
+          }
+        });
+      }
+    }
   }
 
   async openDatePicker() {
@@ -109,17 +117,27 @@ export default class Home extends React.Component {
       const { action, year, month, day } = await DatePickerAndroid.open();
 
       if (action !== DatePickerAndroid.dismissedAction) {
-        const fromDate = new Date(year, month, day - DAY_RANGE);
-        const toDate = new Date(year, month, day + DAY_RANGE);
+        const chosenDate = new Date(year, month, day);
 
-        const fromDateStr = `${fromDate.getMonth() + MONTH_GAP}/${fromDate.getDate()}/${fromDate.getFullYear()}`;
-        const toDateStr = `${toDate.getMonth() + MONTH_GAP}/${toDate.getDate()}/${toDate.getFullYear()}`;
-
-        this.props.loadHabits(fromDateStr, toDateStr);
+        this.loadHomePage(chosenDate);
       }
     } catch (error) {
       return;
     }
+  }
+
+  loadHomePage = date => {
+    const day = date.getDate();
+    const month = date.getMonth();
+    const year = date.getFullYear();
+
+    const fromDate = new Date(year, month, day - DAY_RANGE);
+    const toDate = new Date(year, month, day + DAY_RANGE);
+
+    const fromDateStr = `${fromDate.getMonth() + MONTH_GAP}/${fromDate.getDate()}/${fromDate.getFullYear()}`;
+    const toDateStr = `${toDate.getMonth() + MONTH_GAP}/${toDate.getDate()}/${toDate.getFullYear()}`;
+
+    this.props.loadHabits && this.props.loadHabits(fromDateStr, toDateStr);
   }
 
   closeDrawer = () => {
@@ -140,15 +158,13 @@ export default class Home extends React.Component {
         content={<SideBar />}
       >
         <Tabs
-          style={styles.tab}
           tabBarUnderlineStyle={styles.tabBarUnderLine}
           page={this.state.activePage}
-          onChangeTab={this.handleChangeTab}
-          renderTabBar={() => <ScrollableTab />}
+          renderTabBar={() => <ScrollableTab tabsContainerStyle={styles.tab}/>}
         >
           {renderTabs(habits, { navigation, loadHabitDetail })}
         </Tabs>
-        <Text>{this.state.debug}</Text>
+        {this.state.debug && <Text>{this.state.debug}</Text>}
         <AddNewActivity navigation={this.props.navigation} />
       </Drawer>
     );

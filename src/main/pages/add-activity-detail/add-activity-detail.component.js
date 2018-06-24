@@ -1,5 +1,5 @@
 import React from 'react';
-import { Content, Button, Text, Item, Input, Label, Icon, Picker } from 'native-base';
+import { Content, Button, Text, Item, Input, Label, Icon, Picker, Toast } from 'native-base';
 import { TimePickerAndroid, DatePickerAndroid, View, Modal, Image, TouchableOpacity } from 'react-native';
 
 import icons from '../../assets/icon-index';
@@ -16,10 +16,21 @@ const FOURTH_WEEK = 28;
 const NOT_FOUND = -1;
 const ARRAY_START = 0;
 const ARRAY_STEP = 1;
-const WEEKLY = 'WEEKLY';
-const MONTHLY = 'MONTHLY';
-const YEARLY = 'YEARLY';
+const WEEKLY = 'weekly';
+const MONTHLY = 'monthly';
+const YEARLY = 'yearly';
 const ON_TIME = 0;
+const TOAST_DURATION = 3000;
+
+const round = (number) => {
+  let prefix = "";
+
+  if (number < 10) {
+    prefix = "0";
+  }
+
+  return prefix + number;
+};
 
 export default class AddActivityDetail extends React.Component {
   constructor(props) {
@@ -28,7 +39,8 @@ export default class AddActivityDetail extends React.Component {
     this.state = {
       title: '',
       description: '',
-      icon: '',
+      icon: 'breakfast',
+      tags: [],
       startHour: null,
       startMinute: null,
       endHour: null,
@@ -41,15 +53,38 @@ export default class AddActivityDetail extends React.Component {
   }
 
   static navigationOptions = ({ navigation }) => {
+    const { params = {} } = navigation.state;
+
     return {
       title: 'Create new habit',
       headerTitleStyle: { alignSelf: 'center' },
       headerRight: (
-        <Button transparent onPress={() => navigation.navigate('Home')}>
+        <Button transparent onPress={params.onAddActivity}>
           <Text style={{ color: '#e91e63' }}>DONE</Text>
         </Button>
       )
     };
+  }
+
+  componentDidMount() {
+    this.props.navigation.setParams({ onAddActivity: this.onAddActivity });
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.success !== prevProps.success) {
+      if (this.props.success) {
+        this.props.navigation.navigate('Home');
+      }
+      if (this.props.success === false) {
+        Toast.show({
+          text: this.props.activityStatus,
+          buttonText: 'Okay',
+          duration: TOAST_DURATION,
+          type: 'warning',
+          onClose: this.props.resetStatus
+        });
+      }
+    }
   }
 
   async openTimePicker(hourPicker, minutePicker) {
@@ -74,7 +109,7 @@ export default class AddActivityDetail extends React.Component {
       if (action !== DatePickerAndroid.dismissedAction) {
         const yearlyDate = new Date(year, month, day);
 
-        this.setState({ yearlyDate, scheduler: [yearlyDate.toLocaleDateString()], mode: YEARLY });
+        this.setState({ yearlyDate, scheduler: [`${round(yearlyDate.getMonth() + 1)}/${round(yearlyDate.getDate())}`], mode: YEARLY });
       }
     } catch (error) {
       return;
@@ -82,32 +117,23 @@ export default class AddActivityDetail extends React.Component {
   }
 
   onAddActivity = () => {
-    // const {
-    //   title,
-    //   description,
-    //   icon,
-    //   startHour,
-    //   startMinute,
-    //   endHour,
-    //   endMinute,
-    //   yearlyDate,
-    //   scheduler,
-    //   mode
-    // } = this.state;
+    const { title, description, icon, tags, startHour, startMinute, endHour, endMinute, scheduler, mode } = this.state;
 
-    // const schedule = {
-    //   from: {
-    //     hour: startHour,
-    //     minute: startMinute
-    //   },
-    //   to: {
-    //     hour: endHour,
-    //     minute: endMinute
-    //   },
-    //   repetition: mode,
-    //   times: scheduler,
-    //   reminders: [ON_TIME]
-    // };
+    const schedule = {
+      from: {
+        hour: startHour,
+        minute: startMinute
+      },
+      to: {
+        hour: endHour,
+        minute: endMinute
+      },
+      repetition: mode,
+      times: scheduler,
+      reminders: [ON_TIME]
+    };
+
+    this.props.addNewHabit && this.props.addNewHabit({ title, description, icon, schedule, tags });
   }
 
   onOpenIconChoosingModal = () => this.setState({ iconChoosingModal: true });
@@ -200,7 +226,7 @@ export default class AddActivityDetail extends React.Component {
       const datesOfMonth = [];
 
       for (let i = 1; i <= DATES_OF_MONTH; i++) {
-        datesOfMonth.push(renderDateButton(i, i));
+        datesOfMonth.push(renderDateButton(`${i}`, i));
       }
 
       return (
@@ -244,8 +270,9 @@ export default class AddActivityDetail extends React.Component {
 
     return (
       <Content style={styles.container}>
+        <Text>{this.props.activityStatus}</Text>
         <TouchableOpacity style={styles.habitIcon} onPress={this.onOpenIconChoosingModal}>
-          <Image style={styles.iconImage} source={icons[icon || 'breakfast']} resizeMode='contain' />
+          <Image style={styles.iconImage} source={icons[icon]} resizeMode='contain' />
         </TouchableOpacity>
         <Modal
           animationType="slide"

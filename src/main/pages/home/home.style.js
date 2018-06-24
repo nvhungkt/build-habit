@@ -1,6 +1,9 @@
 import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
+  veryEnd: {
+    height: 50
+  },
   tab: {
     backgroundColor: '#fff'
   },

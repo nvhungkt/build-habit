@@ -1,5 +1,5 @@
 // import { RSAA } from 'redux-api-middleware';
-import { API_REQUEST } from 'redux-native-api-middleware';
+import { API_REQUEST } from '../../utils/api-middleware';
 
 import { getByDate } from '../../constant/api/habit.api';
 

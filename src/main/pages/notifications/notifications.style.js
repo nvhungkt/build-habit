@@ -2,45 +2,54 @@ import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
   container: {
-    height: 80
+    backgroundColor: '#fff'
   },
-  content: {
+  title: {
+    alignSelf: 'center'
+  },
+  row: {
     flex: 1,
-    flexDirection: 'row'
+    flexDirection: 'row',
+    alignItems: 'stretch',
+    height: 84,
+    padding: 12,
+    borderBottomWidth: 0.5,
+    borderColor: '#ccc'
   },
   icon: {
     flex: 2,
     width: undefined,
     height: undefined
   },
-  todo: {
+  content: {
     flex: 8,
-    height: 60,
     marginLeft: 20,
     justifyContent: 'center',
-    alignSelf: 'center',
-    borderBottomWidth: 0.5,
-    borderBottomColor: '#ccc'
-  },
-  status: {
-    flex: 2,
-    alignItems: 'center',
     alignSelf: 'center'
+  },
+  info: {
+    flex: 2,
+    justifyContent: 'space-between',
+    alignItems: 'flex-end'
   }
 });
 
 export const textStyles = done => ({
-  todo: {
+  title: {
     color: done ? '#009688' : '#777',
-    fontSize: 20,
+    fontSize: 16,
     fontWeight: 'bold'
   },
-  times: {
+  notes: {
     color: done ? '#424242' : '#777',
-    fontSize: 20
+    fontSize: 14
+  },
+  time: {
+    color: '#777',
+    fontSize: 12
   },
   status: {
     color: done ? '#64dd17' : '#777',
-    fontSize: 34
+    fontSize: 26
   }
 });

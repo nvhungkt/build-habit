@@ -1,10 +1,13 @@
-import { API_REQUEST } from 'redux-native-api-middleware';
+import { API_REQUEST } from '../../utils/api-middleware';
 
 import { addHabit as addHabitAPI } from '../../constant/api/habit.api';
 
 export const ADD_NEW_HABIT_SUCCESS = 'ADD_NEW_HABIT_SUCCESS';
 export const ADD_NEW_HABIT_FAILURE = 'ADD_NEW_HABIT_FAILURE';
 export const ADD_NEW_HABIT_ERROR = 'ADD_NEW_HABIT_ERROR';
+export const RESET_ADD_ACTIVITY_STATUS = 'RESET_ADD_ACTIVITY_STATUS';
+
+const username = 'nambm';
 
 const addHabit = ({ title, description, icon, schedule, tags }) => {
   return {
@@ -12,7 +15,7 @@ const addHabit = ({ title, description, icon, schedule, tags }) => {
       url: addHabitAPI,
       method: 'POST',
       body: {
-        username: 'hungnv',
+        username,
         title,
         description,
         icon,
@@ -31,3 +34,7 @@ const addHabit = ({ title, description, icon, schedule, tags }) => {
 export const addNewHabit = ({ title, description, icon, schedule, tags }) => {
   return addHabit({ title, description, icon, schedule, tags });
 };
+
+export const resetStatus = () => ({
+  type: RESET_ADD_ACTIVITY_STATUS
+});

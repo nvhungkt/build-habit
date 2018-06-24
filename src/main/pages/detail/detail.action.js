@@ -1,4 +1,4 @@
-import { API_REQUEST } from 'redux-native-api-middleware';
+import { API_REQUEST } from '../../utils/api-middleware';
 
 import { getDetail } from '../../constant/api/habit.api';
 

@@ -8,6 +8,7 @@ import { HOME_STORE, DETAIL_STORE, ADD_ACTIVITY_DETAIL_STORE } from './constant/
 
 import Home from './pages/home';
 import Detail from './pages/detail';
+import Notifications from './pages/notifications';
 import AddActivity from './pages/add-activity';
 import AddActivityDetail from './pages/add-activity-detail';
 
@@ -19,6 +20,9 @@ const RootStack = createStackNavigator(
   {
     Home: {
       screen: Home
+    },
+    Notifications: {
+      screen: Notifications
     },
     Detail: {
       screen: Detail

@@ -10,6 +10,6 @@ export const textStyles = StyleSheet.create({
   section: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#009688'
+    color: '#e91e63'
   }
 });

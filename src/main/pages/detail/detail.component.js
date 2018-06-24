@@ -7,14 +7,6 @@ import icons from '../../assets/icon-index';
 import { styles, textStyles } from './detail.style';
 import { convertHabitDetail } from './detail.utility';
 
-// const habit = {
-//   title: 'Have breakfast',
-//   description: 'Breakfast is the most important meal in a whole day, provide you energy for a long working day',
-//   icon: 'breakfast',
-//   scheduler: 'Every Mon, Tue, Wed, Thu, Fri',
-//   timeRange: '06:00 - 07:00'
-// };
-
 export default class Detail extends React.Component {
   static navigationOptions = () => {
     return {

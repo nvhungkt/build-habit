@@ -2,6 +2,8 @@ import React from 'react';
 import { View, TouchableOpacity, Image } from 'react-native';
 import { Content, Text, Icon } from 'native-base';
 
+import { formatFullDate } from '../../utils/time';
+
 import icons from '../../assets/icon-index';
 
 import { styles, textStyles } from './notifications.style';
@@ -58,7 +60,7 @@ export default class Notifications extends React.Component {
                 <Text numberOfLines={2} style={textStyles(done).notes}>{description}</Text>
               </View>
               <View style={styles.info}>
-                <Text style={textStyles(done).time}>{`${date.getDate()}/${date.getMonth()}/${date.getFullYear()}`}</Text>
+                <Text style={textStyles(done).time}>{formatFullDate(date)}</Text>
                 <Icon style={textStyles(done).status} name="md-checkmark" />
               </View>
             </TouchableOpacity>

@@ -1,8 +1,7 @@
-// import { RSAA } from 'redux-api-middleware';
 import { API_REQUEST } from '../../utils/api-middleware';
 
 import { getByDate } from '../../constant/api/habit.api';
-import { getOffsetMillis } from '../../utils/time/time.utility';
+import { getOffsetMillis } from '../../utils/time';
 
 export const LOAD_HABITS_SUCCESS = 'LOAD_HABITS_SUCCESS';
 export const LOAD_HABITS_FAILURE = 'LOAD_HABITS_FAILURE';

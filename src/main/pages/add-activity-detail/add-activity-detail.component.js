@@ -2,35 +2,27 @@ import React from 'react';
 import { Content, Button, Text, Item, Input, Label, Icon, Picker, Toast } from 'native-base';
 import { TimePickerAndroid, DatePickerAndroid, View, Modal, Image, TouchableOpacity } from 'react-native';
 
-import icons from '../../assets/icon-index';
 import IconChoosingModal from './components/icon-choosing-modal';
+
+import icons from '../../assets/icon-index';
+import { formatDateDisplay, formatDateScheduleCallApi, convertDailyTimePoint } from '../../utils/time';
+import {
+  MAX_DATES_OF_MONTH,
+  FIRST_WEEK,
+  SECOND_WEEK,
+  THIRD_WEEK,
+  FOURTH_WEEK,
+  HABIT_REPETITION,
+  shortDaysOfWeek
+} from '../../constant/time';
 
 import { styles, textStyles } from './add-activity-detail.style';
 
-const datesOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-const DATES_OF_MONTH = 31;
-const FIRST_WEEK = 7;
-const SECOND_WEEK = 14;
-const THIRD_WEEK = 21;
-const FOURTH_WEEK = 28;
 const NOT_FOUND = -1;
 const ARRAY_START = 0;
 const ARRAY_STEP = 1;
-const WEEKLY = 'weekly';
-const MONTHLY = 'monthly';
-const YEARLY = 'yearly';
 const ON_TIME = 0;
 const TOAST_DURATION = 3000;
-
-const round = (number) => {
-  let prefix = "";
-
-  if (number < 10) {
-    prefix = "0";
-  }
-
-  return prefix + number;
-};
 
 export default class AddActivityDetail extends React.Component {
   constructor(props) {
@@ -46,8 +38,8 @@ export default class AddActivityDetail extends React.Component {
       endHour: null,
       endMinute: null,
       yearlyDate: null,
-      mode: WEEKLY,
-      scheduler: datesOfWeek,
+      mode: HABIT_REPETITION.WEEKLY,
+      scheduler: shortDaysOfWeek,
       iconChoosingModal: false
     };
   }
@@ -109,7 +101,11 @@ export default class AddActivityDetail extends React.Component {
       if (action !== DatePickerAndroid.dismissedAction) {
         const yearlyDate = new Date(year, month, day);
 
-        this.setState({ yearlyDate, scheduler: [`${round(yearlyDate.getMonth() + 1)}/${round(yearlyDate.getDate())}`], mode: YEARLY });
+        this.setState({
+          yearlyDate,
+          scheduler: [formatDateScheduleCallApi(yearlyDate)],
+          mode: HABIT_REPETITION.YEARLY
+        });
       }
     } catch (error) {
       return;
@@ -169,13 +165,13 @@ export default class AddActivityDetail extends React.Component {
 
   changeMode = mode => {
     switch (mode) {
-      case WEEKLY:
-        this.setState({ mode, scheduler: datesOfWeek });
+      case HABIT_REPETITION.WEEKLY:
+        this.setState({ mode, scheduler: shortDaysOfWeek });
         break;
-      case MONTHLY:
+      case HABIT_REPETITION.MONTHLY:
         this.setState({ mode, scheduler: [] });
         break;
-      case YEARLY:
+      case HABIT_REPETITION.YEARLY:
         this.openDatePickerYearly();
         break;
       default:
@@ -216,16 +212,16 @@ export default class AddActivityDetail extends React.Component {
       </TouchableOpacity>
     );
 
-    const renderDatesOfWeek = () => (
+    const renderDaysOfWeek = () => (
       <View style={styles.row}>
-        {datesOfWeek.map((dateOfWeek, index) => renderDateButton(dateOfWeek, index))}
+        {shortDaysOfWeek.map((dateOfWeek, index) => renderDateButton(dateOfWeek, index))}
       </View>
     );
 
     const renderDatesOfMonth = () => {
       const datesOfMonth = [];
 
-      for (let i = 1; i <= DATES_OF_MONTH; i++) {
+      for (let i = 1; i <= MAX_DATES_OF_MONTH; i++) {
         datesOfMonth.push(renderDateButton(`${i}`, i));
       }
 
@@ -262,7 +258,7 @@ export default class AddActivityDetail extends React.Component {
             onPress={() => this.openDatePickerYearly()}
           >
             <Text style={textStyles.timeTitle}>Every</Text>
-            <Text style={textStyles.time}>{yearlyDate ? `${yearlyDate.getDate()}/${yearlyDate.getMonth()}` : ''}</Text>
+            <Text style={textStyles.time}>{yearlyDate ? formatDateDisplay(yearlyDate) : ''}</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -313,14 +309,14 @@ export default class AddActivityDetail extends React.Component {
               onPress={() => this.openTimePicker('startHour', 'startMinute')}
             >
               <Text style={textStyles.timeTitle}>Start Time</Text>
-              <Text style={textStyles.time}>{startHour ? `${startHour}:${startMinute}` : ''}</Text>
+              <Text style={textStyles.time}>{startHour ? convertDailyTimePoint(startHour, startMinute) : ''}</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.timePicker}
               onPress={() => this.openTimePicker('endHour', 'endMinute')}
             >
               <Text style={textStyles.timeTitle}>End Time</Text>
-              <Text style={textStyles.time}>{endHour ? `${endHour}:${endMinute}` : ''}</Text>
+              <Text style={textStyles.time}>{endHour ? convertDailyTimePoint(endHour, endMinute) : ''}</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -335,16 +331,16 @@ export default class AddActivityDetail extends React.Component {
               selectedValue={mode}
               onValueChange={this.changeMode}
               >
-              <Picker.Item label="Weekly" value={WEEKLY} />
-              <Picker.Item label="Monthly" value={MONTHLY} />
-              <Picker.Item label="Yearly" value={YEARLY} />
+              <Picker.Item label="Weekly" value={HABIT_REPETITION.WEEKLY} />
+              <Picker.Item label="Monthly" value={HABIT_REPETITION.MONTHLY} />
+              <Picker.Item label="Yearly" value={HABIT_REPETITION.YEARLY} />
             </Picker>
           </View>
         </View>
 
-        {mode === WEEKLY ? renderDatesOfWeek() : null}
-        {mode === MONTHLY ? renderDatesOfMonth() : null}
-        {mode === YEARLY ? renderDateInput() : null}
+        {mode === HABIT_REPETITION.WEEKLY ? renderDaysOfWeek() : null}
+        {mode === HABIT_REPETITION.MONTHLY ? renderDatesOfMonth() : null}
+        {mode === HABIT_REPETITION.YEARLY ? renderDateInput() : null}
       </Content>
     );
   }

@@ -8,24 +8,46 @@ import AddNewActivity from './components/add-new-activity';
 import Todo from './components/todo';
 import TodoList from './components/todolist';
 
+import {
+  formatDateDisplay,
+  formatDateCallApi,
+  getDateApi,
+  isYesterday,
+  isToday,
+  isTomorrow,
+  isMorning,
+  isAfternoon,
+  isEvening
+} from '../../utils/time';
+
 import { styles, textStyles } from './home.style';
-import { formatDate, isYesterday, isToday, isTomorrow } from './home.utility';
 
 const DAY_RANGE = 7;
 const INTERVAL_TIME = 50;
-const MONTH_GAP = 1;
 const TOAST_DURATION = 3000;
 
 const renderTabs = (dates, { navigation, loadHabitDetail }) => {
   return dates.map((item, index) => {
     const { habits } = item;
-    const { date, month, year } = item.day;
-    const newDate = new Date(year, month - MONTH_GAP, date);
-    let heading = formatDate(newDate);
+    const date = getDateApi(item.day);
+    let heading = formatDateDisplay(date);
 
-    if (isYesterday(newDate)) heading = "Yesterday";
-    if (isToday(newDate)) heading = "Today";
-    if (isTomorrow(newDate)) heading = "Tomorrow";
+    if (isYesterday(date)) heading = "Yesterday";
+    if (isToday(date)) heading = "Today";
+    if (isTomorrow(date)) heading = "Tomorrow";
+
+    const renderTodo = (habit, habitIndex) => (
+      <Todo
+        key={habitIndex}
+        loadHabitDetail={loadHabitDetail}
+        habitId={habit.id}
+        todo={habit.title}
+        times={habit.timeRange}
+        done={habit.done}
+        icon={habit.icon}
+        navigation={navigation}
+      />
+    );
 
     return (
       <Tab
@@ -37,18 +59,22 @@ const renderTabs = (dates, { navigation, loadHabitDetail }) => {
         heading={heading}>
         <Content>
           <TodoList name='Morning'>
-            {habits.map((habit, habitIndex) =>
-              <Todo
-                key={habitIndex}
-                loadHabitDetail={loadHabitDetail}
-                habitId={habit.id}
-                todo={habit.title}
-                times={habit.timeRange}
-                done={habit.done}
-                icon={habit.icon}
-                navigation={navigation}
-              />
-            )}
+            {habits
+              .filter(habit => isMorning(habit.time))
+              .map((habit, habitIndex) => renderTodo(habit, habitIndex))
+            }
+          </TodoList>
+          <TodoList name='Afternoon'>
+            {habits
+              .filter(habit => isAfternoon(habit.time))
+              .map((habit, habitIndex) => renderTodo(habit, habitIndex))
+            }
+          </TodoList>
+          <TodoList name='Evening'>
+            {habits
+              .filter(habit => isEvening(habit.time))
+              .map((habit, habitIndex) => renderTodo(habit, habitIndex))
+            }
           </TodoList>
           <View style={styles.veryEnd}></View>
         </Content>
@@ -97,6 +123,7 @@ export default class Home extends React.Component {
     }
 
     if (this.props.success !== prevProps.success) {
+      this.loadHomePage(new Date());
       if (this.props.success) {
         Toast.show({
           text: this.props.activityStatus,
@@ -105,7 +132,6 @@ export default class Home extends React.Component {
           type: 'success',
           onClose: () => {
             this.props.resetStatus();
-            this.loadHomePage(new Date());
           }
         });
       }
@@ -134,10 +160,7 @@ export default class Home extends React.Component {
     const fromDate = new Date(year, month, day - DAY_RANGE);
     const toDate = new Date(year, month, day + DAY_RANGE);
 
-    const fromDateStr = `${fromDate.getMonth() + MONTH_GAP}/${fromDate.getDate()}/${fromDate.getFullYear()}`;
-    const toDateStr = `${toDate.getMonth() + MONTH_GAP}/${toDate.getDate()}/${toDate.getFullYear()}`;
-
-    this.props.loadHabits && this.props.loadHabits(fromDateStr, toDateStr);
+    this.props.loadHabits && this.props.loadHabits(formatDateCallApi(fromDate), formatDateCallApi(toDate));
   }
 
   closeDrawer = () => {

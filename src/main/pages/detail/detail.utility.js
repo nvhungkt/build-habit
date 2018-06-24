@@ -1,36 +1,5 @@
-const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-
-const days = {
-  "mon": "Monday",
-  "tue": "Tuesday",
-  "wed": "Wednesday",
-  "thu": "Thursday",
-  "fri": "Friday",
-  "sat": "Saturday",
-  "sun": "Sunday"
-};
-
-const HABIT_REPETITION = {
-  "WEEKLY": "weekly",
-  "MONTHLY": "monthly",
-  "YEARLY": "yearly"
-};
-
-const DECIMAL = 10;
-
-const convertDailyTimePoint = (dailyTimePoint) => {
-  const round = (number) => {
-    let prefix = "";
-
-    if (number < DECIMAL) {
-      prefix = "0";
-    }
-
-    return prefix + number;
-  };
-
-  return `${round(dailyTimePoint.hour)}:${round(dailyTimePoint.minute)}`;
-};
+import { months, days, HABIT_REPETITION } from '../../constant/time';
+import { convertDailyTimePoint } from '../../utils/time';
 
 export const convertHabitDetail = (habit) => {
   const { title, description, icon, schedule } = habit;
@@ -54,7 +23,7 @@ export const convertHabitDetail = (habit) => {
       break;
   }
 
-  const timeRange = `${convertDailyTimePoint(from)} - ${convertDailyTimePoint(to)}`;
+  const timeRange = `${convertDailyTimePoint(from.hour, from.minute)} - ${convertDailyTimePoint(to.hour, to.minute)}`;
 
   return { title, description, icon, scheduler, timeRange };
 };

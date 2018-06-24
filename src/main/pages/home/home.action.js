@@ -2,6 +2,7 @@
 import { API_REQUEST } from '../../utils/api-middleware';
 
 import { getByDate } from '../../constant/api/habit.api';
+import { getOffsetMillis } from '../../utils/time/time.utility';
 
 export const LOAD_HABITS_SUCCESS = 'LOAD_HABITS_SUCCESS';
 export const LOAD_HABITS_FAILURE = 'LOAD_HABITS_FAILURE';
@@ -10,7 +11,7 @@ export const LOAD_HABITS_ERROR = 'LOAD_HABITS_ERROR';
 const getHabits = (fromDate, toDate) => {
   return {
     [API_REQUEST]: {
-      url: `${getByDate}?username=hungnv&from=${fromDate}&to=${toDate}&offsetMillis=25200000`,
+      url: `${getByDate}?username=hungnv&from=${fromDate}&to=${toDate}&offsetMillis=${getOffsetMillis()}`,
       method: 'GET',
       action: {
         success: LOAD_HABITS_SUCCESS,

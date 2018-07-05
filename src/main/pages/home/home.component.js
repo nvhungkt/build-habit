@@ -1,12 +1,17 @@
 import React from 'react';
+import { Notifications } from 'expo';
 import { DatePickerAndroid, View } from 'react-native';
-import { Tab, Tabs, Content, ScrollableTab, Drawer, Text, Toast } from 'native-base';
+import { Tab, Tabs, Content, ScrollableTab, Drawer, Text, Toast, Button } from 'native-base';
+
+import { createNotificationTable, logAllNotification, getNotification } from '../../sqlite/notification.sqlite';
 
 import NavigationBar from './components/navigation-bar';
 import SideBar from './components/sidebar';
 import AddNewActivity from './components/add-new-activity';
 import Todo from './components/todo';
 import TodoList from './components/todolist';
+
+import { pushNotification, pushTestNotification } from './home.utils';
 
 import {
   formatDateDisplay,
@@ -26,7 +31,7 @@ const DAY_RANGE = 7;
 const INTERVAL_TIME = 50;
 const TOAST_DURATION = 3000;
 
-const renderTabs = (dates, { navigation, loadHabitDetail }) => {
+const renderTabs = (dates, { navigation }) => {
   return dates.map((item, index) => {
     const { habits } = item;
     const date = getDateApi(item.day);
@@ -39,10 +44,10 @@ const renderTabs = (dates, { navigation, loadHabitDetail }) => {
     const renderTodo = (habit, habitIndex) => (
       <Todo
         key={habitIndex}
-        loadHabitDetail={loadHabitDetail}
         habitId={habit.id}
         todo={habit.title}
-        times={habit.timeRange}
+        timeRange={habit.timeRange}
+        time={habit.time}
         done={habit.done}
         icon={habit.icon}
         navigation={navigation}
@@ -108,11 +113,18 @@ export default class Home extends React.Component {
     const today = new Date();
 
     this.loadHomePage(today);
+    this.props.loadNotifications && this.props.loadNotifications();
 
     this.props.navigation.setParams({
       openDrawer: this.openDrawer,
       openDatePicker: () => this.openDatePicker()
     });
+
+    this.notificationSubscription = Notifications.addListener(this.handleNotification);
+
+    createNotificationTable();
+    logAllNotification();
+    // cancelAllNotifications();
   }
 
   componentDidUpdate(prevProps) {
@@ -120,6 +132,12 @@ export default class Home extends React.Component {
       setTimeout(() => {
         this.setState({ activePage: DAY_RANGE });
       }, INTERVAL_TIME);
+    }
+
+    if (this.props.notifications !== prevProps.notifications) {
+      this.props.notifications.forEach(notification => {
+        pushNotification(notification);
+      });
     }
 
     if (this.props.success !== prevProps.success) {
@@ -152,6 +170,20 @@ export default class Home extends React.Component {
     }
   }
 
+  handleNotification = notification => {
+    const { origin, notificationId } = notification;
+
+    if (origin === 'selected') {
+      getNotification(notificationId, notificationRecord => {
+        if (notificationRecord) {
+          const { habitId, time } = notificationRecord;
+
+          this.props.navigation.push('Detail', { habitId, time: Number(time) });
+        }
+      });
+    }
+  }
+
   loadHomePage = date => {
     const day = date.getDate();
     const month = date.getMonth();
@@ -172,7 +204,7 @@ export default class Home extends React.Component {
   };
 
   render() {
-    const { habits, navigation, loadHabitDetail } = this.props;
+    const { habits, navigation } = this.props;
 
     return (
       <Drawer
@@ -185,10 +217,11 @@ export default class Home extends React.Component {
           page={this.state.activePage}
           renderTabBar={() => <ScrollableTab tabsContainerStyle={styles.tab}/>}
         >
-          {renderTabs(habits, { navigation, loadHabitDetail })}
+          {renderTabs(habits, { navigation })}
         </Tabs>
+        <Button onPress={pushTestNotification}><Text>Push notification</Text></Button>
         {this.state.debug && <Text>{this.state.debug}</Text>}
-        <AddNewActivity navigation={this.props.navigation} />
+        {this.props.success ? null : <AddNewActivity navigation={this.props.navigation} />}
       </Drawer>
     );
   }

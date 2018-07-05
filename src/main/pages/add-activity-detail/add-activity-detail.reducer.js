@@ -12,7 +12,7 @@ const initialState = {
 
 const addSuccess = state => ({
   ...state,
-  activityStatus: 'Add habit successfully!',
+  activityStatus: 'Successfully!',
   success: true
 });
 

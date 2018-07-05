@@ -165,8 +165,11 @@ export default class AddActivityDetail extends React.Component {
 
   changeMode = mode => {
     switch (mode) {
+      case HABIT_REPETITION.DAILY:
+        this.setState({ mode, scheduler: [] });
+        break;
       case HABIT_REPETITION.WEEKLY:
-        this.setState({ mode, scheduler: shortDaysOfWeek });
+        this.setState({ mode, scheduler: [] });
         break;
       case HABIT_REPETITION.MONTHLY:
         this.setState({ mode, scheduler: [] });
@@ -266,7 +269,6 @@ export default class AddActivityDetail extends React.Component {
 
     return (
       <Content style={styles.container}>
-        <Text>{this.props.activityStatus}</Text>
         <TouchableOpacity style={styles.habitIcon} onPress={this.onOpenIconChoosingModal}>
           <Image style={styles.iconImage} source={icons[icon]} resizeMode='contain' />
         </TouchableOpacity>
@@ -330,7 +332,8 @@ export default class AddActivityDetail extends React.Component {
               mode="dialog"
               selectedValue={mode}
               onValueChange={this.changeMode}
-              >
+            >
+              <Picker.Item label="Daily" value={HABIT_REPETITION.DAILY} />
               <Picker.Item label="Weekly" value={HABIT_REPETITION.WEEKLY} />
               <Picker.Item label="Monthly" value={HABIT_REPETITION.MONTHLY} />
               <Picker.Item label="Yearly" value={HABIT_REPETITION.YEARLY} />

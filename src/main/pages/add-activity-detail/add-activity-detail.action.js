@@ -9,7 +9,7 @@ export const RESET_ADD_ACTIVITY_STATUS = 'RESET_ADD_ACTIVITY_STATUS';
 
 const username = 'hungnv';
 
-const addHabit = ({ title, description, icon, schedule, tags }) => {
+const postAddNewHabit = ({ title, description, icon, schedule, tags }) => {
   return {
     [API_REQUEST]: {
       url: addHabitAPI,
@@ -32,7 +32,7 @@ const addHabit = ({ title, description, icon, schedule, tags }) => {
 };
 
 export const addNewHabit = ({ title, description, icon, schedule, tags }) => {
-  return addHabit({ title, description, icon, schedule, tags });
+  return postAddNewHabit({ title, description, icon, schedule, tags });
 };
 
 export const resetStatus = () => ({

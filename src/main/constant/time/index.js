@@ -13,6 +13,7 @@ export const days = {
 export const shortDaysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 export const HABIT_REPETITION = {
+  DAILY: 'daily',
   WEEKLY: 'weekly',
   MONTHLY: 'monthly',
   YEARLY: 'yearly'

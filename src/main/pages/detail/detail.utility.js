@@ -2,7 +2,7 @@ import { months, days, HABIT_REPETITION } from '../../constant/time';
 import { convertDailyTimePoint } from '../../utils/time';
 
 export const convertHabitDetail = (habit) => {
-  const { title, description, icon, schedule } = habit;
+  const { title, description, icon, schedule, id } = habit;
   const { repetition, times, from, to } = schedule;
   let scheduler = 'Every ';
 
@@ -25,5 +25,5 @@ export const convertHabitDetail = (habit) => {
 
   const timeRange = `${convertDailyTimePoint(from.hour, from.minute)} - ${convertDailyTimePoint(to.hour, to.minute)}`;
 
-  return { title, description, icon, scheduler, timeRange };
+  return { title, description, icon, scheduler, timeRange, id };
 };

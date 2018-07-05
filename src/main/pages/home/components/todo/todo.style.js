@@ -35,7 +35,7 @@ export const textStyles = done => ({
     fontSize: 20,
     fontWeight: 'bold'
   },
-  times: {
+  timeRange: {
     color: done ? '#424242' : '#777',
     fontSize: 20
   },

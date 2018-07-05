@@ -9,14 +9,13 @@ import { styles, textStyles } from './todo.style';
 export default class Todo extends React.Component {
 
   onChooseDetail = () => {
-    const { loadHabitDetail, navigation, habitId } = this.props;
+    const { navigation, habitId, time } = this.props;
 
-    loadHabitDetail(habitId);
-    navigation.push('Detail');
+    navigation.push('Detail', { habitId, time });
   };
 
   render() {
-    const { todo, times, done, icon } = this.props;
+    const { todo, timeRange, done, icon } = this.props;
 
     return (
       <TouchableOpacity style={styles.container} onPress={this.onChooseDetail}>
@@ -24,7 +23,7 @@ export default class Todo extends React.Component {
           {icon && <Image style={styles.icon} source={icons[icon]} resizeMode='contain' />}
           <View style={styles.todo}>
             <Text style={textStyles(done).todo}>{todo}</Text>
-            <Text style={textStyles(done).times}>{times}</Text>
+            <Text style={textStyles(done).timeRange}>{timeRange}</Text>
           </View>
           <View style={styles.status}>
             <Icon style={textStyles(done).status} name="md-checkmark" />

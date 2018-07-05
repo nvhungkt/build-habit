@@ -44,7 +44,7 @@ export default class NavigationBar extends React.Component {
           </Button>
         </Left>
         <Body style={{ flex: 1 }}>
-          <Title style={styles.appName}>Habit</Title>
+          <Title style={styles.appName}>Everyday Awesome</Title>
         </Body>
         <Right style={{ flex: 1 }}>
           <Button transparent onPress={this.props.openDatePicker}>

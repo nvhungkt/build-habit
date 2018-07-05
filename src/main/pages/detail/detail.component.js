@@ -29,6 +29,31 @@ export default class Detail extends React.Component {
     };
   }
 
+  componentDidMount() {
+    const { navigation, loadHabitDetail } = this.props;
+    const habitId = navigation.getParam('habitId', null);
+
+    loadHabitDetail && loadHabitDetail(habitId);
+  }
+
+  onCheckDoneHabit = () => {
+    const { navigation } = this.props;
+    const time = navigation.getParam('time', null);
+    const habitId = navigation.getParam('habitId', null);
+
+    this.props.checkDone && this.props.checkDone(habitId, time);
+    navigation.goBack();
+  }
+
+  onCheckUndoneHabit = () => {
+    const { navigation } = this.props;
+    const time = navigation.getParam('time', null);
+    const habitId = navigation.getParam('habitId', null);
+
+    this.props.checkDone && this.props.checkUndone(habitId, time);
+    navigation.goBack();
+  }
+
   render() {
     const habit = this.props.habit.schedule ? convertHabitDetail(this.props.habit) : {};
 
@@ -47,12 +72,12 @@ export default class Detail extends React.Component {
         </Content>
         <View style={styles.actions}>
           <View>
-            <Button style={styles.close} rounded>
+            <Button style={styles.close} rounded onPress={this.onCheckUndoneHabit}>
               <Icon style={textStyles.actionIcon} name='md-close' />
             </Button>
           </View>
           <View>
-            <Button style={styles.done} rounded>
+            <Button style={styles.done} rounded onPress={this.onCheckDoneHabit}>
               <Icon style={textStyles.actionIcon} name='md-checkmark' />
             </Button>
           </View>

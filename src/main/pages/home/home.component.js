@@ -1,7 +1,7 @@
 import React from 'react';
 import { Notifications } from 'expo';
 import { DatePickerAndroid, View } from 'react-native';
-import { Tab, Tabs, Content, ScrollableTab, Drawer, Text, Toast, Button } from 'native-base';
+import { Tab, Tabs, Content, ScrollableTab, Drawer, Text, Toast } from 'native-base';
 
 import { createNotificationTable, logAllNotification, getNotification } from '../../sqlite/notification.sqlite';
 
@@ -11,7 +11,7 @@ import AddNewActivity from './components/add-new-activity';
 import Todo from './components/todo';
 import TodoList from './components/todolist';
 
-import { pushNotification, pushTestNotification } from './home.utils';
+import { pushNotification } from './home.utils';
 
 import {
   formatDateDisplay,
@@ -219,7 +219,6 @@ export default class Home extends React.Component {
         >
           {renderTabs(habits, { navigation })}
         </Tabs>
-        <Button onPress={pushTestNotification}><Text>Push notification</Text></Button>
         {this.state.debug && <Text>{this.state.debug}</Text>}
         {this.props.success ? null : <AddNewActivity navigation={this.props.navigation} />}
       </Drawer>

@@ -13,7 +13,7 @@ export const CHECK_DONE_HABIT_ERROR = 'ADD_NEW_HABIT_ERROR';
 const getHabitDetail = id => {
   return {
     [API_REQUEST]: {
-      url: `${getDetail}?username=hungnv&habitId=${id}`,
+      url: `${getDetail}?username=hungnv&habitId=${id}&offsetMillis=${getOffsetMillis()}`,
       method: 'GET',
       action: {
         success: LOAD_HABIT_DETAIL_SUCCESS,

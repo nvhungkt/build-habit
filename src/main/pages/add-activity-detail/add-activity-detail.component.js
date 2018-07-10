@@ -24,22 +24,53 @@ const ARRAY_STEP = 1;
 const ON_TIME = 0;
 const TOAST_DURATION = 3000;
 
+const capitalizeFirstLetter = string => {
+  return string.charAt(ARRAY_START).toUpperCase() + string.slice(ARRAY_STEP);
+};
+
+const getScheduler = schedule => {
+  const { repetition, times = [] } = schedule;
+
+  switch (repetition) {
+    case HABIT_REPETITION.DAILY:
+      return shortDaysOfWeek;
+    case HABIT_REPETITION.WEEKLY:
+      return times.map(time => capitalizeFirstLetter(time.day));
+    case HABIT_REPETITION.MONTHLY:
+      return times.map(time => time.date);
+    case HABIT_REPETITION.YEARLY:
+      return [formatDateScheduleCallApi(new Date())];
+    default:
+      return shortDaysOfWeek;
+  }
+};
+
 export default class AddActivityDetail extends React.Component {
   constructor(props) {
     super(props);
 
+    const template = props.navigation.getParam('template', {});
+    const {
+      title = '',
+      description = '',
+      icon = 'breakfast',
+      tags = [],
+      schedule = {}
+    } = template;
+    const { from, to, repetition = HABIT_REPETITION.DAILY } = schedule;
+
     this.state = {
-      title: '',
-      description: '',
-      icon: 'breakfast',
-      tags: [],
-      startHour: null,
-      startMinute: null,
-      endHour: null,
-      endMinute: null,
-      yearlyDate: null,
-      mode: HABIT_REPETITION.WEEKLY,
-      scheduler: shortDaysOfWeek,
+      title,
+      description,
+      icon,
+      tags,
+      startHour: from && from.hour,
+      startMinute: from && from.minute,
+      endHour: to && to.hour,
+      endMinute: to && to.minute,
+      yearlyDate: repetition === HABIT_REPETITION.YEARLY ? new Date() : null,
+      mode: repetition,
+      scheduler: getScheduler(schedule),
       iconChoosingModal: false
     };
   }
@@ -166,7 +197,7 @@ export default class AddActivityDetail extends React.Component {
   changeMode = mode => {
     switch (mode) {
       case HABIT_REPETITION.DAILY:
-        this.setState({ mode, scheduler: [] });
+        this.setState({ mode, scheduler: shortDaysOfWeek });
         break;
       case HABIT_REPETITION.WEEKLY:
         this.setState({ mode, scheduler: [] });

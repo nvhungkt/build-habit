@@ -5,64 +5,6 @@ import HabitTag from './components/habit-tag';
 
 import { styles, textStyles } from './add-activity.style';
 
-const tags = [
-  {
-    name: 'Health',
-    habits: [
-      {
-        title: 'Do exercies',
-        icon: 'dumbbell-single'
-      },
-      {
-        title: 'Have fruits before meal',
-        icon: 'avocado'
-      },
-      {
-        title: 'Go to bed early',
-        icon: 'bed'
-      }
-    ]
-  },
-  {
-    name: 'Study',
-    habits: [
-      {
-        title: 'Read books',
-        icon: 'news'
-      },
-      {
-        title: 'Learn English',
-        icon: 'check-list'
-      },
-      {
-        title: 'Listen to records',
-        icon: 'radio'
-      },
-      {
-        title: 'Practice with homeworks',
-        icon: 'healthcare-heart'
-      }
-    ]
-  },
-  {
-    name: 'Work',
-    habits: [
-      {
-        title: 'Pomodoro Technique',
-        icon: 'tomato'
-      },
-      {
-        title: 'Listen to music',
-        icon: 'radio'
-      },
-      {
-        title: 'Meet up with other people',
-        icon: 'shirt'
-      }
-    ]
-  }
-];
-
 export default class AddActivity extends React.Component {
   static navigationOptions = ({ navigation }) => {
     return {
@@ -76,10 +18,18 @@ export default class AddActivity extends React.Component {
     };
   }
 
+  componentDidMount() {
+    this.props.getAllTemplatesByTags && this.props.getAllTemplatesByTags();
+  }
+
   render() {
+    const { tags, navigation } = this.props;
+
     return (
       <Content style={styles.container}>
-        {tags.map((tag, index) => <HabitTag key={index} name={tag.name} habits={tag.habits} />)}
+        {tags.map((tag, index) =>
+          <HabitTag navigation={navigation} key={index} name={tag.tagName} habits={tag.habits} />
+        )}
       </Content>
     );
   }

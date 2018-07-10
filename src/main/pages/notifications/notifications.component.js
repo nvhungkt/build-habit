@@ -8,51 +8,37 @@ import icons from '../../assets/icon-index';
 
 import { styles, textStyles } from './notifications.style';
 
-const notifications = [
-  {
-    id: '123',
-    title: 'Have breakfast',
-    description: 'A healthy breakfast brings your life',
-    icon: 'breakfast',
-    time: 1529728137002,
-    timeRange: '06:00-06:30',
-    done: true
-  },
-  {
-    id: '123',
-    title: 'Have breakfast',
-    description: 'A healthy breakfast brings your life. A very long notes. A very long notes. A very long notes.',
-    icon: 'breakfast',
-    time: 1529728137002,
-    timeRange: '06:00-06:30',
-    done: true
-  },
-  {
-    id: '123',
-    title: 'Have breakfast',
-    description: 'A healthy breakfast brings your life',
-    icon: 'breakfast',
-    time: 1529728137002,
-    timeRange: '06:00-06:30',
-    done: false
-  }
-];
-
 export default class Notifications extends React.Component {
   static navigationOptions = {
     title: 'Notifications',
     headerTitleStyle: styles.title
   }
 
+  componentDidMount() {
+    this.props.loadNotifications && this.props.loadNotifications();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.success !== prevProps.success) {
+      if (this.props.success) {
+        this.props.loadNotifications && this.props.loadNotifications();
+      }
+    }
+  }
+
+  handleChooseHabit = (habitId, time) => {
+    this.props.navigation.push('Detail', { habitId, time });
+  }
+
   render() {
     return (
       <Content style={styles.container}>
-        {notifications.map((notification, index) => {
-          const { title, description, icon, time, timeRange, done } = notification;
+        {this.props.notifications.map((notification, index) => {
+          const { id, title, description, icon, time, timeRange, done } = notification;
           const date = new Date(time);
 
           return (
-            <TouchableOpacity style={styles.row} key={index}>
+            <TouchableOpacity onPress={() => this.handleChooseHabit(id, time)} style={styles.row} key={index}>
               {icon && <Image style={styles.icon} source={icons[icon]} resizeMode='contain' />}
               <View style={styles.content}>
                 <Text style={textStyles(done).title}>{timeRange}</Text>

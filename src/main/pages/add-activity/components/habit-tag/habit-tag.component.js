@@ -8,11 +8,13 @@ import { styles, textStyles } from './habit-tag.style';
 
 export default class HabitTag extends React.Component {
   render() {
+    const { habits = [], name, navigation } = this.props;
+
     return (
       <View style={styles.container}>
-        <Text style={textStyles.section}>{this.props.name}</Text>
-        {this.props.habits.map((habit, index) =>
-          <HabitTemplate title={habit.title} icon={habit.icon} key={index} />
+        <Text style={textStyles.section}>{name}</Text>
+        {habits.map((habit, index) =>
+          <HabitTemplate navigation={navigation} habit={habit} key={index} />
         )}
       </View>
     );

@@ -148,9 +148,7 @@ export default class Home extends React.Component {
           buttonText: 'Okay',
           duration: TOAST_DURATION,
           type: 'success',
-          onClose: () => {
-            this.props.resetStatus();
-          }
+          onClose: this.props.resetStatus
         });
       }
     }

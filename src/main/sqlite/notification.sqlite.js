@@ -60,7 +60,7 @@ export const logAllNotification = () => {
       'select * from notification',
       [],
       (_, { rows: { _array } }) => {
-        console.log(_array);
+        // console.log(_array);
       }
     );
   });

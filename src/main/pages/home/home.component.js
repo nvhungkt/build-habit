@@ -141,8 +141,8 @@ export default class Home extends React.Component {
     }
 
     if (this.props.success !== prevProps.success) {
-      this.loadHomePage(new Date());
       if (this.props.success) {
+        this.loadHomePage(this.chosenDate || new Date());
         Toast.show({
           text: this.props.activityStatus,
           buttonText: 'Okay',
@@ -163,7 +163,8 @@ export default class Home extends React.Component {
       if (action !== DatePickerAndroid.dismissedAction) {
         const chosenDate = new Date(year, month, day);
 
-        this.loadHomePage(chosenDate);
+        this.chosenDate = chosenDate;
+        this.loadHomePage(this.chosenDate);
       }
     } catch (error) {
       return;

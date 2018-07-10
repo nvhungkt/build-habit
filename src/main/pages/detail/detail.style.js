@@ -19,7 +19,8 @@ export const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 10
+    marginTop: 10,
+    marginBottom: 10
   },
   title: {
     textAlign: 'center',
@@ -29,7 +30,8 @@ export const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     alignItems: 'center',
-    paddingTop: 20
+    paddingTop: 20,
+    paddingBottom: 20
   },
   detailContent: {
     width: 350,
@@ -37,8 +39,15 @@ export const styles = StyleSheet.create({
     flexDirection: 'column'
   },
   habitIcon: {
-    width: 60,
-    height: 60
+    width: 50,
+    height: 50,
+    marginRight: 10
+  },
+  scoreIcon: {
+    width: 100,
+    height: 100,
+    marginLeft: 30,
+    marginRight: 30
   },
   icon: {
     width: 40,
@@ -114,14 +123,12 @@ export const textStyles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold'
   },
-  description: {
+  default: {
     fontSize: 18
   },
-  scheduler: {
-    fontSize: 18
-  },
-  time: {
-    fontSize: 18
+  small: {
+    fontSize: 14,
+    color: '#999'
   },
   actionIcon: {
     fontSize: 34

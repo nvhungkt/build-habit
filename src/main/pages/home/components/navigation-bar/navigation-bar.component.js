@@ -43,7 +43,7 @@ export default class NavigationBar extends React.Component {
             <Icon style={{color: 'black'}} name='menu' />
           </Button>
         </Left>
-        <Body style={{ flex: 1 }}>
+        <Body style={{ flex: 3 }}>
           <Title style={styles.appName}>Everyday Awesome</Title>
         </Body>
         <Right style={{ flex: 1 }}>

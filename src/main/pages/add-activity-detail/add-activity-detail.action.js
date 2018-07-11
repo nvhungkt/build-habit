@@ -1,6 +1,6 @@
 import { API_REQUEST } from '../../utils/api-middleware';
 
-import { addHabit as addHabitAPI } from '../../constant/api/habit.api';
+import { addHabit as addHabitAPI, updateHabit } from '../../constant/api/habit.api';
 
 export const ADD_NEW_HABIT_SUCCESS = 'ADD_NEW_HABIT_SUCCESS';
 export const ADD_NEW_HABIT_FAILURE = 'ADD_NEW_HABIT_FAILURE';
@@ -9,13 +9,14 @@ export const RESET_ADD_ACTIVITY_STATUS = 'RESET_ADD_ACTIVITY_STATUS';
 
 const username = 'hungnv';
 
-const postAddNewHabit = ({ title, description, icon, schedule, tags }) => {
+const postAddNewHabit = ({ id, title, description, icon, schedule, tags, editMode }) => {
   return {
     [API_REQUEST]: {
-      url: addHabitAPI,
-      method: 'POST',
+      url: editMode ? updateHabit : addHabitAPI,
+      method: editMode ? 'PUT' : 'POST',
       body: {
         username,
+        id,
         title,
         description,
         icon,
@@ -31,8 +32,8 @@ const postAddNewHabit = ({ title, description, icon, schedule, tags }) => {
   };
 };
 
-export const addNewHabit = ({ title, description, icon, schedule, tags }) => {
-  return postAddNewHabit({ title, description, icon, schedule, tags });
+export const addNewHabit = ({ id, title, description, icon, schedule, tags, editMode }) => {
+  return postAddNewHabit({ id, title, description, icon, schedule, tags, editMode });
 };
 
 export const resetStatus = () => ({

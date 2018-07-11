@@ -1,5 +1,6 @@
 import {
   months,
+  LAST_DAY_OF_LAST_MONTH,
   TWELVE_OCLOCK,
   SIX_PM_OCLOCK,
   DATE_STEP,
@@ -86,3 +87,22 @@ export const isEvening = time => {
 
 export const convertDailyTimePoint = (hour, minute) =>
   `${formatNumberDisplay(hour)}:${formatNumberDisplay(minute)}`;
+
+export const getNumberOfDatesInMonth = date => {
+  const nextMonth = date.getMonth() + MONTH_GAP;
+  const thisYear = date.getFullYear();
+
+  const lastDateOfLastMonth = new Date(thisYear, nextMonth, LAST_DAY_OF_LAST_MONTH);
+
+  return lastDateOfLastMonth.getDate();
+};
+
+export const getNumberOfDatesInLastMonth = () => {
+  const today = new Date();
+  const thisMonth = today.getMonth();
+  const thisYear = today.getFullYear();
+
+  const lastDateOfLastMonth = new Date(thisYear, thisMonth, LAST_DAY_OF_LAST_MONTH);
+
+  return lastDateOfLastMonth.getDate();
+};

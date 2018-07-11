@@ -19,6 +19,7 @@ export const HABIT_REPETITION = {
   YEARLY: 'yearly'
 };
 
+export const LAST_DAY_OF_LAST_MONTH = 0;
 export const MAX_DATES_OF_MONTH = 31;
 export const FIRST_WEEK = 7;
 export const SECOND_WEEK = 14;

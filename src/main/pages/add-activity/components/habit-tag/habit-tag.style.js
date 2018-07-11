@@ -11,6 +11,6 @@ export const textStyles = StyleSheet.create({
     fontSize: 16,
     marginBottom: 10,
     fontWeight: 'bold',
-    color: '#009688'
+    color: '#009C0E'
   }
 });

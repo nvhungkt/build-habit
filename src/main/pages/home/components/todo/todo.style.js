@@ -31,16 +31,16 @@ export const styles = StyleSheet.create({
 
 export const textStyles = done => ({
   todo: {
-    color: done ? '#009688' : '#777',
+    color: done ? '#009C0E' : '#999',
     fontSize: 20,
     fontWeight: 'bold'
   },
   timeRange: {
-    color: done ? '#424242' : '#777',
+    color: done ? '#424242' : '#999',
     fontSize: 20
   },
   status: {
-    color: done ? '#64dd17' : '#777',
+    color: done ? '#009C0E' : '#fff',
     fontSize: 34
   }
 });

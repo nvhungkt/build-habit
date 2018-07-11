@@ -6,7 +6,15 @@ import { ProgressCircle, BarChart, Grid, YAxis, XAxis } from 'react-native-svg-c
 import icons from '../../assets/icon-index';
 import levels from '../../assets/level-index';
 
-import { styles, textStyles, chartStyles } from './detail.style';
+import { getNumberOfDatesInLastMonth } from '../../utils/time';
+import {
+  FIRST_WEEK,
+  SECOND_WEEK,
+  THIRD_WEEK,
+  FOURTH_WEEK
+} from '../../constant/time';
+
+import { styles, textStyles, chartStyles, chartMonthStyles } from './detail.style';
 import { convertHabitDetail } from './detail.utility';
 
 const ARRAY_START = 0;
@@ -75,15 +83,70 @@ const getChartData = logs => {
   return data;
 };
 
+const renderLastMonthLogs = (logs = []) => {
+  const numberOfDates = getNumberOfDatesInLastMonth();
+  const shortLogs = logs.length > numberOfDates ? logs.slice(logs.length - numberOfDates) : logs;
+
+  let lastMonthLogs = shortLogs.map((log, index) => {
+    const dateOfMonth = new Date(log.time).getDate();
+
+    return (
+      <View key={index} style={chartMonthStyles(log.done).date}>
+        <Text style={chartMonthStyles(log.done).dateIcon}>{dateOfMonth}</Text>
+      </View>
+    );
+  });
+
+  const currentLength = lastMonthLogs.length;
+  const expectedLength = Math.ceil(lastMonthLogs.length / DAYS_OF_WEEK) * DAYS_OF_WEEK;
+
+  for (let i = 0; i < expectedLength - currentLength; i++) {
+    lastMonthLogs.push(<View key={expectedLength + i} style={chartMonthStyles().date}></View>);
+  }
+
+  return (
+    <React.Fragment>
+      <View style={chartMonthStyles().rowChart}>
+        {lastMonthLogs.slice(ARRAY_START, FIRST_WEEK).map(date => date)}
+      </View>
+      {
+        lastMonthLogs.length > FIRST_WEEK &&
+        <View style={chartMonthStyles().rowChart}>
+          {lastMonthLogs.slice(FIRST_WEEK, SECOND_WEEK).map(date => date)}
+        </View>
+      }
+      {
+        lastMonthLogs.length > SECOND_WEEK &&
+        <View style={chartMonthStyles().rowChart}>
+          {lastMonthLogs.slice(SECOND_WEEK, THIRD_WEEK).map(date => date)}
+        </View>
+      }
+      {
+        lastMonthLogs.length > THIRD_WEEK &&
+        <View style={chartMonthStyles().rowChart}>
+          {lastMonthLogs.slice(THIRD_WEEK, FOURTH_WEEK).map(date => date)}
+        </View>
+      }
+      {
+        lastMonthLogs.length > FOURTH_WEEK &&
+        <View style={chartMonthStyles().rowChart}>
+          {lastMonthLogs.slice(FOURTH_WEEK).map(date => date)}
+        </View>
+      }
+    </React.Fragment>
+  );
+};
+
 export default class Detail extends React.Component {
   static navigationOptions = ({ navigation }) => {
-    const { state } = navigation;
+    const { habit = {} } = navigation.state.params;
+    const handleEdit = () => navigation.push('AddActivityDetail', { template: habit, editMode: true });
 
     return {
       headerTitle: (
         <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
-          <Image style={styles.habitIcon} source={icons[state.params.icon]} resizeMode='contain' />
-          <Text style={textStyles.title}>{state.params.title || 'Details'}</Text>
+          <Image style={styles.habitIcon} source={icons[habit.icon]} resizeMode='contain' />
+          <Text style={textStyles.title}>{habit.title || 'Details'}</Text>
         </View>
       ),
       headerTitleStyle: styles.title,
@@ -92,7 +155,7 @@ export default class Detail extends React.Component {
           <Button transparent>
             <Icon style={{color: 'black'}} name='md-trash' />
           </Button>
-          <Button transparent>
+          <Button onPress={handleEdit} transparent>
             <Icon style={{color: 'black'}} name='md-create' />
           </Button>
         </React.Fragment>
@@ -121,11 +184,10 @@ export default class Detail extends React.Component {
   componentDidUpdate(prevProps) {
     if (prevProps.habit !== this.props.habit) {
       const { habitMembers } = this.props.habit;
-      const habit = habitMembers ? convertHabitDetail(habitMembers[habitMembers.length - ARRAY_STEP]) : {};
+      const habit = habitMembers ? habitMembers[habitMembers.length - ARRAY_STEP] : {};
 
       this.props.navigation.setParams({
-        title: habit.title,
-        icon: habit.icon
+        habit
       });
     }
   }
@@ -168,15 +230,15 @@ export default class Detail extends React.Component {
         <Content style={styles.container}>
           <View style={styles.content}>
             <View style={styles.row}>
-              <ProgressCircle
-                style={styles.scoreIcon}
-                progress={progress}
-                progressColor={'#e91e63'}
-              />
+              <View style={styles.progress}>
+                <ProgressCircle
+                  style={styles.scoreIcon}
+                  progress={progress}
+                  progressColor={'#E91E63'}
+                />
+                <Text style={textStyles.progress}>{Math.round(progress * ONE_HUNDRED_PERCENT)}%</Text>
+              </View>
               <Image style={styles.scoreIcon} source={levels[level]} resizeMode='contain' />
-            </View>
-            <View style={styles.row}>
-              <Text style={textStyles.title}>{Math.round(progress * ONE_HUNDRED_PERCENT)}%</Text>
             </View>
 
             <View style={styles.detailContent}>
@@ -199,38 +261,47 @@ export default class Detail extends React.Component {
             </TouchableOpacity>
 
             {showStatistic ?
-              <View style={styles.row}>
-                <YAxis
-                  data={yAxisData}
-                  style={chartStyles(chartData).yAxis}
-                  svg={chartStyles(chartData).yAxisSvg}
-                  contentInset={chartStyles(chartData).yAxisInset}
-                  numberOfTicks={7}
-                  formatLabel={value => `${value} time${value > MINIMUM_DATA ? 's' : ''}`}
-                />
-                <BarChart
-                  style={chartStyles(chartData).chart}
-                  data={chartData}
-                  svg= {chartStyles(chartData).chartSvg}
-                  numberOfTicks={Math.max(...chartData)}
-                  contentInset={chartStyles(chartData).chartInset}
-                >
-                  <Grid/>
-                </BarChart>
-              </View> : null
-            }
+              <React.Fragment>
+                <View style={styles.row}>
+                  <Text style={textStyles.title}>Activity Frequence</Text>
+                </View>
+                <View style={styles.row}>
+                  <YAxis
+                    data={yAxisData}
+                    style={chartStyles(chartData).yAxis}
+                    svg={chartStyles(chartData).yAxisSvg}
+                    contentInset={chartStyles(chartData).yAxisInset}
+                    numberOfTicks={7}
+                    formatLabel={value => `${value} time${value > MINIMUM_DATA ? 's' : ''}`}
+                  />
+                  <BarChart
+                    style={chartStyles(chartData).chart}
+                    data={chartData}
+                    svg= {chartStyles(chartData).chartSvg}
+                    spacingInner={0.35}
+                    numberOfTicks={Math.max(...chartData) - Math.min(...chartData)}
+                    contentInset={chartStyles(chartData).chartInset}
+                  >
+                    <Grid/>
+                  </BarChart>
+                </View>
+                <View style={styles.row}>
+                  <Text style={chartStyles(chartData).xAxisLabel}>Week</Text>
+                  <XAxis
+                    data={chartData}
+                    style={chartStyles(chartData).xAxis}
+                    svg={chartStyles(chartData).xAxisSvg}
+                    formatLabel={value => value + ARRAY_STEP}
+                    contentInset={chartStyles(chartData).xAxisInset}
+                  />
+                </View>
 
-            {showStatistic ?
-              <View style={styles.row}>
-                <Text style={chartStyles(chartData).xAxisLabel}>Week</Text>
-                <XAxis
-                  data={chartData}
-                  style={chartStyles(chartData).xAxis}
-                  svg={chartStyles(chartData).xAxisSvg}
-                  formatLabel={value => value + ARRAY_STEP}
-                  contentInset={chartStyles(chartData).xAxisInset}
-                />
-              </View> : null
+                <View style={styles.row}>
+                  <Text style={textStyles.title}>Last Month Logs</Text>
+                </View>
+                {renderLastMonthLogs(logs)}
+
+              </React.Fragment> : null
             }
           </View>
         </Content>

@@ -37,7 +37,7 @@ const getScheduler = schedule => {
     case HABIT_REPETITION.WEEKLY:
       return times.map(time => capitalizeFirstLetter(time.day));
     case HABIT_REPETITION.MONTHLY:
-      return times.map(time => time.date);
+      return times.map(time => `${time.date}`);
     case HABIT_REPETITION.YEARLY:
       return [formatDateScheduleCallApi(new Date())];
     default:
@@ -51,6 +51,7 @@ export default class AddActivityDetail extends React.Component {
 
     const template = props.navigation.getParam('template', {});
     const {
+      id = undefined,
       title = '',
       description = '',
       icon = 'breakfast',
@@ -60,6 +61,7 @@ export default class AddActivityDetail extends React.Component {
     const { from, to, repetition = HABIT_REPETITION.DAILY } = schedule;
 
     this.state = {
+      id,
       title,
       description,
       icon,
@@ -83,7 +85,7 @@ export default class AddActivityDetail extends React.Component {
       headerTitleStyle: { alignSelf: 'center' },
       headerRight: (
         <Button transparent onPress={params.onAddActivity}>
-          <Text style={{ color: '#e91e63' }}>DONE</Text>
+          <Text style={{ color: '#E91E63' }}>DONE</Text>
         </Button>
       )
     };
@@ -144,7 +146,20 @@ export default class AddActivityDetail extends React.Component {
   }
 
   onAddActivity = () => {
-    const { title, description, icon, tags, startHour, startMinute, endHour, endMinute, scheduler, mode } = this.state;
+    const {
+      id,
+      title,
+      description,
+      icon,
+      tags,
+      startHour,
+      startMinute,
+      endHour,
+      endMinute,
+      scheduler,
+      mode
+    } = this.state;
+    const editMode = this.props.navigation.getParam('editMode', false);
 
     const schedule = {
       from: {
@@ -160,7 +175,7 @@ export default class AddActivityDetail extends React.Component {
       reminders: [ON_TIME]
     };
 
-    this.props.addNewHabit && this.props.addNewHabit({ title, description, icon, schedule, tags });
+    this.props.addNewHabit && this.props.addNewHabit({ id, title, description, icon, schedule, tags, editMode });
   }
 
   onOpenIconChoosingModal = () => this.setState({ iconChoosingModal: true });

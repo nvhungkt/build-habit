@@ -36,7 +36,7 @@ export const styles = StyleSheet.create({
     alignItems: 'flex-start'
   },
   icon: {
-    color: '#009688'
+    color: '#009C0E'
   },
   input: {
     marginTop: 2
@@ -77,7 +77,7 @@ export const textStyles = StyleSheet.create({
     fontSize: 22
   },
   dateActive: {
-    color: '#e91e63'
+    color: '#E91E63'
   },
   dateNotActive: {
     color: '#999'

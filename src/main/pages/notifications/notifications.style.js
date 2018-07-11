@@ -36,7 +36,7 @@ export const styles = StyleSheet.create({
 
 export const textStyles = done => ({
   title: {
-    color: done ? '#009688' : '#777',
+    color: done ? '#009C0E' : '#777',
     fontSize: 16,
     fontWeight: 'bold'
   },

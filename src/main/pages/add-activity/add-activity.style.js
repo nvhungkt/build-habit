@@ -11,6 +11,6 @@ export const styles = StyleSheet.create({
 
 export const textStyles = StyleSheet.create({
   themeText: {
-    color: '#e91e63'
+    color: '#E91E63'
   }
 });

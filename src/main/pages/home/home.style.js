@@ -8,7 +8,7 @@ export const styles = StyleSheet.create({
     backgroundColor: '#fff'
   },
   tabBarUnderLine: {
-    backgroundColor: '#e91e63'
+    backgroundColor: '#E91E63'
   }
 });
 
@@ -18,7 +18,7 @@ export const textStyles = StyleSheet.create({
     fontSize: 18
   },
   activeText: {
-    color: '#e91e63',
+    color: '#E91E63',
     fontSize: 22
   }
 });

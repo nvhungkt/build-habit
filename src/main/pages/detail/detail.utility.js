@@ -1,6 +1,8 @@
 import { months, days, HABIT_REPETITION } from '../../constant/time';
 import { convertDailyTimePoint } from '../../utils/time';
 
+const MONTH_GAP = 1;
+
 export const convertHabitDetail = (habit) => {
   const { title, description, icon, schedule, id } = habit;
   const { repetition, times, from, to } = schedule;
@@ -17,7 +19,7 @@ export const convertHabitDetail = (habit) => {
       break;
     case HABIT_REPETITION.YEARLY:
       scheduler += 'year on ';
-      scheduler += times.map(element => `${element.date}-${months[element.month]}`).join(', ');
+      scheduler += times.map(element => `${element.date}-${months[element.month - MONTH_GAP]}`).join(', ');
       break;
     default:
       break;

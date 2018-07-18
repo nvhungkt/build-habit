@@ -3,7 +3,8 @@ import { Notifications } from 'expo';
 import { DatePickerAndroid, View } from 'react-native';
 import { Tab, Tabs, Content, ScrollableTab, Drawer, Text, Toast } from 'native-base';
 
-import { createNotificationTable, logAllNotification, getNotification } from '../../sqlite/notification.sqlite';
+import { createNotificationTable, getNotification } from '../../sqlite/notification.sqlite';
+import { getToken } from '../../sqlite/token.storage';
 
 import NavigationBar from './components/navigation-bar';
 import SideBar from './components/sidebar';
@@ -105,15 +106,13 @@ export default class Home extends React.Component {
     super(props);
     this.state = {
       activePage: 1,
-      debug: null
+      debug: null,
+      token: null
     };
   }
 
   componentDidMount() {
-    const today = new Date();
-
-    this.loadHomePage(today);
-    this.props.loadNotifications && this.props.loadNotifications();
+    this.getToken();
 
     this.props.navigation.setParams({
       openDrawer: this.openDrawer,
@@ -123,7 +122,7 @@ export default class Home extends React.Component {
     this.notificationSubscription = Notifications.addListener(this.handleNotification);
 
     createNotificationTable();
-    logAllNotification();
+    // logAllNotification();
     // cancelAllNotifications();
   }
 
@@ -152,6 +151,14 @@ export default class Home extends React.Component {
         });
       }
     }
+  }
+
+  getToken = async () => {
+    this.token = await getToken();
+    const today = new Date();
+
+    this.loadHomePage(today);
+    this.props.loadNotifications && this.props.loadNotifications(this.token);
   }
 
   async openDatePicker() {
@@ -191,7 +198,7 @@ export default class Home extends React.Component {
     const fromDate = new Date(year, month, day - DAY_RANGE);
     const toDate = new Date(year, month, day + DAY_RANGE);
 
-    this.props.loadHabits && this.props.loadHabits(formatDateCallApi(fromDate), formatDateCallApi(toDate));
+    this.props.loadHabits && this.props.loadHabits(formatDateCallApi(fromDate), formatDateCallApi(toDate), this.token);
   }
 
   closeDrawer = () => {
@@ -209,7 +216,7 @@ export default class Home extends React.Component {
       <Drawer
         ref={(ref) => { this.drawer = ref; }}
         onClose={this.closeDrawer}
-        content={<SideBar />}
+        content={<SideBar navigation={navigation} />}
       >
         <Tabs
           tabBarUnderlineStyle={styles.tabBarUnderLine}

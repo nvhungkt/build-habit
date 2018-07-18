@@ -2,7 +2,7 @@ import React from 'react';
 import { Content, Button, Text, Item, Input, Label, Icon, Picker, Toast } from 'native-base';
 import { TimePickerAndroid, DatePickerAndroid, View, Modal, Image, TouchableOpacity } from 'react-native';
 
-import IconChoosingModal from './components/icon-choosing-modal';
+import { getToken } from '../../sqlite/token.storage';
 
 import icons from '../../assets/icon-index';
 import { formatDateDisplay, formatDateScheduleCallApi, convertDailyTimePoint } from '../../utils/time';
@@ -15,6 +15,8 @@ import {
   HABIT_REPETITION,
   shortDaysOfWeek
 } from '../../constant/time';
+
+import IconChoosingModal from './components/icon-choosing-modal';
 
 import { styles, textStyles } from './add-activity-detail.style';
 
@@ -92,6 +94,7 @@ export default class AddActivityDetail extends React.Component {
   }
 
   componentDidMount() {
+    this.getToken();
     this.props.navigation.setParams({ onAddActivity: this.onAddActivity });
   }
 
@@ -110,6 +113,10 @@ export default class AddActivityDetail extends React.Component {
         });
       }
     }
+  }
+
+  getToken = async () => {
+    this.token = await getToken();
   }
 
   async openTimePicker(hourPicker, minutePicker) {
@@ -175,7 +182,8 @@ export default class AddActivityDetail extends React.Component {
       reminders: [ON_TIME]
     };
 
-    this.props.addNewHabit && this.props.addNewHabit({ id, title, description, icon, schedule, tags, editMode });
+    this.props.addNewHabit &&
+      this.props.addNewHabit({ id, title, description, icon, schedule, tags, editMode }, this.token);
   }
 
   onOpenIconChoosingModal = () => this.setState({ iconChoosingModal: true });

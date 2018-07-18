@@ -3,6 +3,7 @@ import { View, TouchableOpacity, Image } from 'react-native';
 import { Content, Text, Icon } from 'native-base';
 
 import { formatFullDate } from '../../utils/time';
+import { getToken } from '../../sqlite/token.storage';
 
 import icons from '../../assets/icon-index';
 
@@ -15,7 +16,7 @@ export default class Notifications extends React.Component {
   }
 
   componentDidMount() {
-    this.props.loadNotifications && this.props.loadNotifications();
+    this.getToken();
   }
 
   componentDidUpdate(prevProps) {
@@ -24,6 +25,12 @@ export default class Notifications extends React.Component {
         this.props.loadNotifications && this.props.loadNotifications();
       }
     }
+  }
+
+  getToken = async () => {
+    this.token = await getToken();
+
+    this.props.loadNotifications && this.props.loadNotifications(this.token);
   }
 
   handleChooseHabit = (habitId, time) => {

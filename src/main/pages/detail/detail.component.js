@@ -3,6 +3,8 @@ import { View, Image, TouchableOpacity } from 'react-native';
 import { Content, Button, Text, Icon } from 'native-base';
 import { ProgressCircle, BarChart, Grid, YAxis, XAxis } from 'react-native-svg-charts';
 
+import { getToken } from '../../sqlite/token.storage';
+
 import icons from '../../assets/icon-index';
 import levels from '../../assets/level-index';
 
@@ -175,10 +177,7 @@ export default class Detail extends React.Component {
   }
 
   componentDidMount() {
-    const { navigation, loadHabitDetail } = this.props;
-    const habitId = navigation.getParam('habitId', null);
-
-    loadHabitDetail && loadHabitDetail(habitId);
+    this.getToken();
   }
 
   componentDidUpdate(prevProps) {
@@ -192,6 +191,14 @@ export default class Detail extends React.Component {
     }
   }
 
+  getToken = async () => {
+    this.token = await getToken();
+    const { navigation, loadHabitDetail } = this.props;
+    const habitId = navigation.getParam('habitId', null);
+
+    loadHabitDetail && loadHabitDetail(habitId, this.token);
+  }
+
   toggleShowStatistic = () => {
     const { showStatistic } = this.state;
 
@@ -203,7 +210,7 @@ export default class Detail extends React.Component {
     const time = navigation.getParam('time', null);
     const habitId = navigation.getParam('habitId', null);
 
-    this.props.checkDone && this.props.checkDone(habitId, time);
+    this.props.checkDone && this.props.checkDone(habitId, time, this.token);
     navigation.goBack();
   }
 
@@ -212,7 +219,7 @@ export default class Detail extends React.Component {
     const time = navigation.getParam('time', null);
     const habitId = navigation.getParam('habitId', null);
 
-    this.props.checkDone && this.props.checkUndone(habitId, time);
+    this.props.checkUndone && this.props.checkUndone(habitId, time, this.token);
     navigation.goBack();
   }
 

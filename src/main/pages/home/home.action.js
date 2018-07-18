@@ -1,6 +1,6 @@
 import { API_REQUEST } from '../../utils/api-middleware';
 
-import { getByDate, getByDateOffset } from '../../constant/api/habit.api';
+import { getByDate, getByDateOffset as getNotif } from '../../constant/api/habit.api';
 import { getOffsetMillis } from '../../utils/time';
 
 export const LOAD_HABITS_SUCCESS = 'LOAD_HABITS_SUCCESS';
@@ -10,10 +10,13 @@ export const LOAD_NOTIFICATIONS_SUCCESS = 'LOAD_NOTIFICATIONS_SUCCESS';
 export const LOAD_NOTIFICATIONS_FAILURE = 'LOAD_NOTIFICATIONS_FAILURE';
 export const LOAD_NOTIFICATIONS_ERROR = 'LOAD_NOTIFICATIONS_ERROR';
 
-const getHabits = (fromDate, toDate) => {
+const getHabits = (fromDate, toDate, { token, username }) => {
   return {
     [API_REQUEST]: {
-      url: `${getByDate}?username=hungnv&from=${fromDate}&to=${toDate}&offsetMillis=${getOffsetMillis()}`,
+      url: `${getByDate}?username=${username}&from=${fromDate}&to=${toDate}&offsetMillis=${getOffsetMillis()}`,
+      headers: {
+        Authorization: token
+      },
       method: 'GET',
       action: {
         success: LOAD_HABITS_SUCCESS,
@@ -24,10 +27,13 @@ const getHabits = (fromDate, toDate) => {
   };
 };
 
-const getNotifications = (dateRange, mode) => {
+const getNotifications = (dateRange, mode, { token, username }) => {
   return {
     [API_REQUEST]: {
-      url: `${getByDateOffset}?username=hungnv&mode=${mode}&dateOffset=${dateRange}&offsetMillis=${getOffsetMillis()}`,
+      url: `${getNotif}?username=${username}&mode=${mode}&dateOffset=${dateRange}&offsetMillis=${getOffsetMillis()}`,
+      headers: {
+        Authorization: token
+      },
       method: 'GET',
       action: {
         success: LOAD_NOTIFICATIONS_SUCCESS,
@@ -38,12 +44,12 @@ const getNotifications = (dateRange, mode) => {
   };
 };
 
-export const loadHabits = (fromDate, toDate) => {
-  return getHabits(fromDate, toDate);
+export const loadHabits = (fromDate, toDate, { token, username }) => {
+  return getHabits(fromDate, toDate, { token, username });
 };
 
-export const loadNotifications = () => {
+export const loadNotifications = ({ token, username }) => {
   const dateRange = 1;
 
-  return getNotifications(dateRange, 'future');
+  return getNotifications(dateRange, 'future', { token, username });
 };

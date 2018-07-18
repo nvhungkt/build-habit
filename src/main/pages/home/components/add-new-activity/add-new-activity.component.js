@@ -9,7 +9,7 @@ export default class AddNewActivity extends React.Component {
     return (
       <View style={styles.center}>
         <Button style={styles.button} rounded info onPress={() => this.props.navigation.push('AddActivity')}>
-          <Text>Add new habit</Text>
+          <Text>Practice more</Text>
         </Button>
       </View>
     );

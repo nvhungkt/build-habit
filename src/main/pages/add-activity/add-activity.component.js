@@ -1,8 +1,9 @@
 import React from 'react';
 import { Content, Button, Text } from 'native-base';
 
-import HabitTag from './components/habit-tag';
+import { getToken } from '../../sqlite/token.storage';
 
+import HabitTag from './components/habit-tag';
 import { styles, textStyles } from './add-activity.style';
 
 export default class AddActivity extends React.Component {
@@ -19,7 +20,12 @@ export default class AddActivity extends React.Component {
   }
 
   componentDidMount() {
-    this.props.getAllTemplatesByTags && this.props.getAllTemplatesByTags();
+    this.getToken();
+  }
+
+  getToken = async () => {
+    this.token = await getToken();
+    this.props.getAllTemplatesByTags && this.props.getAllTemplatesByTags(this.token);
   }
 
   render() {

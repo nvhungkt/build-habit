@@ -10,10 +10,13 @@ export const CHECK_DONE_HABIT_SUCCESS = 'ADD_NEW_HABIT_SUCCESS';
 export const CHECK_DONE_HABIT_FAILURE = 'ADD_NEW_HABIT_FAILURE';
 export const CHECK_DONE_HABIT_ERROR = 'ADD_NEW_HABIT_ERROR';
 
-const getHabitDetail = id => {
+const getHabitDetail = (id, { token, username }) => {
   return {
     [API_REQUEST]: {
-      url: `${getDetail}?username=hungnv&habitId=${id}&offsetMillis=${getOffsetMillis()}`,
+      url: `${getDetail}?username=${username}&habitId=${id}&offsetMillis=${getOffsetMillis()}`,
+      headers: {
+        Authorization: token
+      },
       method: 'GET',
       action: {
         success: LOAD_HABIT_DETAIL_SUCCESS,
@@ -24,15 +27,18 @@ const getHabitDetail = id => {
   };
 };
 
-const putDoneHabit = (id, time) => {
+const putDoneHabit = (id, time, { token, username }) => {
   return {
     [API_REQUEST]: {
       url: checkDoneHabit,
+      headers: {
+        Authorization: token
+      },
       method: 'PUT',
       body: {
         time,
         habitId: id,
-        username: 'hungnv',
+        username,
         offsetMillis: getOffsetMillis()
       },
       action: {
@@ -44,15 +50,18 @@ const putDoneHabit = (id, time) => {
   };
 };
 
-const putUndoneHabit = (id, time) => {
+const putUndoneHabit = (id, time, { token, username }) => {
   return {
     [API_REQUEST]: {
       url: unCheckDoneHabit,
+      headers: {
+        Authorization: token
+      },
       method: 'PUT',
       body: {
         time,
         habitId: id,
-        username: 'hungnv',
+        username,
         offsetMillis: getOffsetMillis()
       },
       action: {
@@ -64,14 +73,14 @@ const putUndoneHabit = (id, time) => {
   };
 };
 
-export const loadHabitDetail = id => {
-  return getHabitDetail(id);
+export const loadHabitDetail = (id, { token, username }) => {
+  return getHabitDetail(id, { token, username });
 };
 
-export const checkDone = (id, time) => {
-  return putDoneHabit(id, time);
+export const checkDone = (id, time, { token, username }) => {
+  return putDoneHabit(id, time, { token, username });
 };
 
-export const checkUndone = (id, time) => {
-  return putUndoneHabit(id, time);
+export const checkUndone = (id, time, { token, username }) => {
+  return putUndoneHabit(id, time, { token, username });
 };

@@ -1,16 +1,19 @@
 import { API_REQUEST } from '../../utils/api-middleware';
 
-import { getByDateOffset } from '../../constant/api/habit.api';
+import { getByDateOffset as getNotif } from '../../constant/api/habit.api';
 import { getOffsetMillis } from '../../utils/time';
 
 export const LOAD_NOTIFICATION_PAGE_SUCCESS = 'LOAD_NOTIFICATION_PAGE_SUCCESS';
 export const LOAD_NOTIFICATION_PAGE_FAILURE = 'LOAD_NOTIFICATION_PAGE_FAILURE';
 export const LOAD_NOTIFICATION_PAGE_ERROR = 'LOAD_NOTIFICATION_PAGE_ERROR';
 
-const getNotifications = (dateRange, mode) => {
+const getNotifications = (dateRange, mode, { token, username }) => {
   return {
     [API_REQUEST]: {
-      url: `${getByDateOffset}?username=hungnv&mode=${mode}&dateOffset=${dateRange}&offsetMillis=${getOffsetMillis()}`,
+      url: `${getNotif}?username=${username}&mode=${mode}&dateOffset=${dateRange}&offsetMillis=${getOffsetMillis()}`,
+      headers: {
+        Authorization: token
+      },
       method: 'GET',
       action: {
         success: LOAD_NOTIFICATION_PAGE_SUCCESS,
@@ -21,8 +24,8 @@ const getNotifications = (dateRange, mode) => {
   };
 };
 
-export const loadNotifications = () => {
+export const loadNotifications = ({ token, username }) => {
   const dateRange = 3;
 
-  return getNotifications(dateRange, 'past');
+  return getNotifications(dateRange, 'past', { token, username });
 };

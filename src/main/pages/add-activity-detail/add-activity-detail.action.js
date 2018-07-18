@@ -7,12 +7,13 @@ export const ADD_NEW_HABIT_FAILURE = 'ADD_NEW_HABIT_FAILURE';
 export const ADD_NEW_HABIT_ERROR = 'ADD_NEW_HABIT_ERROR';
 export const RESET_ADD_ACTIVITY_STATUS = 'RESET_ADD_ACTIVITY_STATUS';
 
-const username = 'hungnv';
-
-const postAddNewHabit = ({ id, title, description, icon, schedule, tags, editMode }) => {
+const postAddNewHabit = ({ id, title, description, icon, schedule, tags, editMode }, { token, username }) => {
   return {
     [API_REQUEST]: {
       url: editMode ? updateHabit : addHabitAPI,
+      headers: {
+        Authorization: token
+      },
       method: editMode ? 'PUT' : 'POST',
       body: {
         username,
@@ -32,8 +33,8 @@ const postAddNewHabit = ({ id, title, description, icon, schedule, tags, editMod
   };
 };
 
-export const addNewHabit = ({ id, title, description, icon, schedule, tags, editMode }) => {
-  return postAddNewHabit({ id, title, description, icon, schedule, tags, editMode });
+export const addNewHabit = ({ id, title, description, icon, schedule, tags, editMode }, { token, username }) => {
+  return postAddNewHabit({ id, title, description, icon, schedule, tags, editMode }, { token, username });
 };
 
 export const resetStatus = () => ({

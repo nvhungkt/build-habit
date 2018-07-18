@@ -14,7 +14,7 @@ const menus = [
     {
       title: 'My notifications',
       icon: 'md-notifications',
-      page: 'Home'
+      page: 'Notifications'
     }
   ],
   [
@@ -25,11 +25,6 @@ const menus = [
     },
     {
       title: 'Add habit',
-      icon: 'md-add',
-      page: 'AddActivity'
-    },
-    {
-      title: 'Add event',
       icon: 'md-add',
       page: 'AddActivity'
     }
@@ -43,7 +38,7 @@ const menus = [
     {
       title: 'Log out',
       icon: 'md-exit',
-      page: 'Home'
+      page: 'Login'
     }
   ],
   [
@@ -69,8 +64,11 @@ export default class SideBar extends React.Component {
           <View style={styles.block} key={index}>
 
             {block.map((item, itemIndex) => (
-              <TouchableOpacity style={styles.row} key={itemIndex}>
-
+              <TouchableOpacity
+                style={styles.row}
+                key={itemIndex}
+                onPress={() => this.props.navigation.push(item.page)}
+              >
                 <View style={styles.iconContainer}>
                   <Icon style={styles.icon} name={item.icon} />
                 </View>
@@ -78,7 +76,6 @@ export default class SideBar extends React.Component {
                 <View style={styles.menuItem}>
                   <Text style={textStyles.menuItem}>{item.title}</Text>
                 </View>
-
               </TouchableOpacity>
             ))}
 

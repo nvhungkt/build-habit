@@ -1,3 +1,4 @@
+export const LOGIN_STORE = 'LOGIN_STORE';
 export const HOME_STORE = 'HOME_STORE';
 export const NOTIFICATIONS_STORE = 'NOTIFICATIONS_STORE';
 export const DETAIL_STORE = 'DETAIL_STORE';

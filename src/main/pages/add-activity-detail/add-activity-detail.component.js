@@ -86,7 +86,7 @@ export default class AddActivityDetail extends React.Component {
       title: 'Create new habit',
       headerTitleStyle: { alignSelf: 'center' },
       headerRight: (
-        <Button transparent onPress={params.onAddActivity}>
+        <Button style={{ height: 54 }} onPress={params.onAddActivity} transparent>
           <Text style={{ color: '#E91E63' }}>DONE</Text>
         </Button>
       )

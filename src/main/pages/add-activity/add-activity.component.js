@@ -1,4 +1,5 @@
 import React from 'react';
+import { TouchableOpacity } from 'react-native';
 import { Content, Button, Text } from 'native-base';
 
 import { getToken } from '../../sqlite/token.storage';
@@ -12,7 +13,7 @@ export default class AddActivity extends React.Component {
       title: 'Add new habit',
       headerTitleStyle: styles.title,
       headerRight: (
-        <Button transparent onPress={() => navigation.push('AddActivityDetail')}>
+        <Button style={{ height: 54 }} onPress={() => navigation.push('AddActivityDetail')} transparent>
           <Text style={textStyles.themeText}>CREATE</Text>
         </Button>
       )
@@ -33,6 +34,23 @@ export default class AddActivity extends React.Component {
 
     return (
       <Content style={styles.container}>
+        <TouchableOpacity
+          style={{ marginTop: 15 }}
+          onPress={() => navigation.push('AddActivityDetail')}
+        >
+          <Text style={{
+            color: '#E91E63',
+            fontWeight: 'bold',
+            alignSelf: 'center',
+            flex: 1,
+            padding: 8,
+            borderColor: '#E91E63',
+            borderWidth: 1,
+            borderRadius: 20
+          }}>
+            CREATE YOUR OWN HABIT
+          </Text>
+        </TouchableOpacity>
         {tags.map((tag, index) =>
           <HabitTag navigation={navigation} key={index} name={tag.tagName} habits={tag.habits} />
         )}

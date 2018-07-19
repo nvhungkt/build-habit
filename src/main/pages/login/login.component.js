@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, TouchableOpacity, Image } from 'react-native';
+import { KeyboardAvoidingView, TouchableOpacity, Image } from 'react-native';
 import { Content, Item, Label, Input, Button, Text } from 'native-base';
 
 import { saveToken } from '../../sqlite/token.storage';
@@ -66,7 +66,7 @@ export default class Login extends React.Component {
 
     return (
       <Content style={styles.container}>
-        <View style={styles.content}>
+        <KeyboardAvoidingView style={styles.content} behavior='padding'>
 
           <Image style={styles.logo} source={logo} resizeMode='contain' />
           <Item style={styles.row} floatingLabel>
@@ -116,7 +116,7 @@ export default class Login extends React.Component {
             <Text style={styles.link}>{isLoginPage ? 'Create new account' : 'Login with existed account'}</Text>
           </TouchableOpacity>
 
-        </View>
+        </KeyboardAvoidingView>
       </Content>
     );
   }

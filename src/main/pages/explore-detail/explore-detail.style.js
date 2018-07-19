@@ -1,16 +1,5 @@
 import { StyleSheet } from 'react-native';
 
-const iconAction = color => ({
-  backgroundColor: color,
-  width: 72,
-  height: 72,
-  marginLeft: 48,
-  marginRight: 48,
-  flex: 1,
-  alignItems: 'center',
-  justifyContent: 'center'
-});
-
 export const styles = StyleSheet.create({
   container: {
     backgroundColor: '#fff'
@@ -55,16 +44,7 @@ export const styles = StyleSheet.create({
   icon: {
     width: 40,
     color: '#009C0E'
-  },
-  actions: {
-    position: 'absolute',
-    bottom: 48,
-    alignSelf: 'center',
-    flex: 1,
-    flexDirection: 'row'
-  },
-  close: iconAction('#D50000'),
-  done: iconAction('#64DD17')
+  }
 });
 
 export const chartStyles = (chartData = []) => {
@@ -122,41 +102,9 @@ export const chartStyles = (chartData = []) => {
   };
 };
 
-export const chartMonthStyles = done => ({
-  rowChart: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    width: 350,
-    marginTop: 5,
-    marginBottom: 5
-  },
-  date: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: 40,
-    height: 40,
-    marginRight: 5,
-    marginLeft: 5,
-    borderRadius: 22,
-    backgroundColor: done ? '#81C784' : '#eee'
-  },
-  dateIcon: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: done ? '#fff' : '#000'
-  }
-});
-
 export const textStyles = StyleSheet.create({
   title: {
     fontSize: 20,
-    fontWeight: 'bold'
-  },
-  notice: {
-    fontSize: 16,
-    color: '#009C0E',
     fontWeight: 'bold'
   },
   progress: {
@@ -167,15 +115,5 @@ export const textStyles = StyleSheet.create({
     top: 30,
     left: 5,
     textAlign: 'center'
-  },
-  default: {
-    fontSize: 18
-  },
-  small: {
-    fontSize: 16,
-    color: '#888'
-  },
-  actionIcon: {
-    fontSize: 34
   }
 });

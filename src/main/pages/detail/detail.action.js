@@ -85,7 +85,7 @@ const putStopHabit = (id, { token, username }) => {
       },
       method: 'PUT',
       body: {
-        habitId: id,
+        id,
         username
       },
       action: {

@@ -36,7 +36,7 @@ const LEVEL_5 = 100;
 const LEVEL_SCORE = [LEVEL_1, LEVEL_2, LEVEL_3, LEVEL_4, LEVEL_5];
 const LEVEL_NAME = ['not-ranking', 'beginner', 'fluency', 'experience', 'expert', 'master'];
 
-const getProgress = logs => {
+const getScore = logs => {
   if (!logs) return MIN_SCORE;
 
   let score = MIN_SCORE;
@@ -49,7 +49,7 @@ const getProgress = logs => {
     }
   });
 
-  return score / MAX_SCORE;
+  return score;
 };
 
 const getLevel = logs => {
@@ -154,10 +154,10 @@ export default class Detail extends React.Component {
       headerTitleStyle: styles.title,
       headerRight: (
         <React.Fragment>
-          <Button onPress={onDeleteHabit} transparent>
+          <Button style={{ height: 54 }} onPress={onDeleteHabit} transparent>
             <Icon style={{color: 'black'}} name='md-trash' />
           </Button>
-          <Button onPress={handleEdit} transparent>
+          <Button style={{ height: 54 }} onPress={handleEdit} transparent>
             <Icon style={{color: 'black'}} name='md-create' />
           </Button>
         </React.Fragment>
@@ -239,7 +239,8 @@ export default class Detail extends React.Component {
     const { habitMembers, logs } = this.props.habit;
     const { showStatistic } = this.state;
     const habit = habitMembers ? convertHabitDetail(habitMembers[habitMembers.length - ARRAY_STEP]) : {};
-    const progress = getProgress(logs);
+    const score = getScore(logs);
+    const progress = score / MAX_SCORE;
     const level = getLevel(logs);
     const chartData = getChartData(logs);
     const yAxisData = [MINIMUM_DATA, DAYS_OF_WEEK];
@@ -258,6 +259,10 @@ export default class Detail extends React.Component {
                 <Text style={textStyles.progress}>{Math.round(progress * ONE_HUNDRED_PERCENT)}%</Text>
               </View>
               <Image style={styles.scoreIcon} source={levels[level]} resizeMode='contain' />
+            </View>
+
+            <View style={styles.row}>
+              <Text style={textStyles.notice}>Only {MAX_SCORE - score} days to complete</Text>
             </View>
 
             <View style={styles.detailContent}>

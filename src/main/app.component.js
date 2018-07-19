@@ -20,6 +20,8 @@ import Detail from './pages/detail';
 import Notifications from './pages/notifications';
 import AddActivity from './pages/add-activity';
 import AddActivityDetail from './pages/add-activity-detail';
+import Explore from './pages/explore';
+import ExploreDetail from './pages/explore-detail';
 
 import { loginReducer } from './pages/login/login.reducer';
 import { homeReducer } from './pages/home/home.reducer';
@@ -47,6 +49,12 @@ const createRootStack = inititalPage => createStackNavigator(
     },
     AddActivityDetail: {
       screen: AddActivityDetail
+    },
+    Explore: {
+      screen: Explore
+    },
+    ExploreDetail: {
+      screen: ExploreDetail
     }
   },
   {

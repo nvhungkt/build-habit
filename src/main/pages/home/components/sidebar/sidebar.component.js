@@ -7,6 +7,13 @@ import { styles, textStyles } from './sidebar.style';
 const menus = [
   [
     {
+      title: 'Explore',
+      icon: 'md-paper-plane',
+      action: 'push',
+      page: 'Explore',
+      params: {}
+    },
+    {
       title: 'My habits and activities',
       icon: 'md-apps',
       action: 'push',

@@ -1,13 +1,14 @@
 {
   "expo": {
-   "name": "Sexy Habit",
-   "version": "1.0.0",
-   "sdkVersion": "27.0.0",
-   "ios": {
-     "bundleIdentifier": "com.nvhung.sexyhabit"
-   },
-   "android": {
-     "package": "com.nvhung.sexyhabit"
-   }
+    "name": "Everyday Awesome",
+    "icon": "./src/main/assets/app-icon.png",
+    "version": "1.0.0",
+    "sdkVersion": "27.0.0",
+    "ios": {
+      "bundleIdentifier": "com.nvhung.everydayawesome"
+    },
+    "android": {
+      "package": "com.nvhung.everydayawesome"
+    }
   }
 }

@@ -1,8 +1,9 @@
 import React from 'react';
-import { View, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity, Image } from 'react-native';
 import { Content, Item, Label, Input, Button, Text } from 'native-base';
 
 import { saveToken } from '../../sqlite/token.storage';
+import logo from '../../assets/logo.png';
 
 import { styles } from './login.style';
 
@@ -25,8 +26,12 @@ export default class Login extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (!prevProps.token && this.props.token) {
+    const { token, username, password } = this.props;
+
+    if (!prevProps.token && token) {
       this.saveToken();
+    } else if (!prevProps.username && username) {
+      this.props.login && this.props.login(username, password);
     }
   }
 
@@ -49,8 +54,7 @@ export default class Login extends React.Component {
     if (isLoginPage) {
       this.props.login && this.props.login(username, password);
     } else if (password === confirm) {
-      // eslint-disable-next-line
-      alert(username + password + confirm + name + email);
+      this.props.signUp && this.props.signUp({ username, password, name, email });
     } else {
       // eslint-disable-next-line
       alert('Wrong confirm password');
@@ -64,6 +68,7 @@ export default class Login extends React.Component {
       <Content style={styles.container}>
         <View style={styles.content}>
 
+          <Image style={styles.logo} source={logo} resizeMode='contain' />
           <Item style={styles.row} floatingLabel>
             <Label style={styles.input}>Username</Label>
             <Input onChangeText={value => this.handleTextInput(value, 'username')} value={username} />
@@ -103,12 +108,12 @@ export default class Login extends React.Component {
             </Item>
           )}
 
-          <Button style={styles.row} onPress={this.handleSubmit} rounded>
+          <Button style={styles.button} onPress={this.handleSubmit} rounded>
             <Text>{isLoginPage ? 'LOGIN' : 'SIGN UP'}</Text>
           </Button>
 
           <TouchableOpacity style={styles.row} onPress={this.toggleMode} transparent>
-            <Text>{isLoginPage ? 'Create new account' : 'Login with existed account'}</Text>
+            <Text style={styles.link}>{isLoginPage ? 'Create new account' : 'Login with existed account'}</Text>
           </TouchableOpacity>
 
         </View>

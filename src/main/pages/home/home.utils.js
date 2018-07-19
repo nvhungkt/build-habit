@@ -1,7 +1,7 @@
 import { Notifications } from 'expo';
 
 import { getNotificationId, addNotification } from '../../sqlite/notification.sqlite';
-// import { } from '../../assets/icon/apple.png';
+// import { } from '../../assets/app-icon.png';
 
 export const cancelAllNotifications = () => {
   Notifications.cancelAllScheduledNotificationsAsync();
@@ -18,7 +18,7 @@ export const pushNotification = notification => {
         android:
         {
           sound: true,
-          // icon (optional) (string) — URL of icon to display in notification drawer.
+          icon: '../../assets/app-icon.png',
           priority: 'high',
           vibrate: true
           // link (optional) (string) — external link to open when notification is selected.
@@ -43,7 +43,7 @@ export const pushTestNotification = () => {
     android:
     {
       sound: true,
-      icon: '../../assets/icon/apple.png',
+      icon: '../../assets/app-icon.png',
       priority: 'high',
       vibrate: true
       // link (optional) (string) — external link to open when notification is selected.

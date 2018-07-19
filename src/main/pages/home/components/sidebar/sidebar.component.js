@@ -9,48 +9,64 @@ const menus = [
     {
       title: 'My habits and activities',
       icon: 'md-apps',
-      page: 'Home'
+      action: 'push',
+      page: 'Home',
+      params: {}
     },
     {
       title: 'My notifications',
       icon: 'md-notifications',
-      page: 'Notifications'
+      action: 'push',
+      page: 'Notifications',
+      params: {}
     }
   ],
   [
     {
       title: 'Home',
       icon: 'md-home',
-      page: 'Home'
+      action: 'navigate',
+      page: 'Home',
+      params: {}
     },
     {
       title: 'Add habit',
       icon: 'md-add',
-      page: 'AddActivity'
+      action: 'push',
+      page: 'AddActivity',
+      params: {}
     }
   ],
   [
     {
       title: 'Account',
       icon: 'md-contact',
-      page: 'Home'
+      action: 'push',
+      page: 'Home',
+      params: {}
     },
     {
       title: 'Log out',
       icon: 'md-exit',
-      page: 'Login'
+      action: 'navigate',
+      page: 'Login',
+      params: {}
     }
   ],
   [
     {
       title: 'Settings',
       icon: 'md-settings',
-      page: 'Home'
+      action: 'push',
+      page: 'Home',
+      params: {}
     },
     {
       title: 'About us',
       icon: 'md-information-circle',
-      page: 'Home'
+      action: 'push',
+      page: 'Home',
+      params: { reload: true }
     }
   ]
 ];
@@ -67,7 +83,7 @@ export default class SideBar extends React.Component {
               <TouchableOpacity
                 style={styles.row}
                 key={itemIndex}
-                onPress={() => this.props.navigation.push(item.page)}
+                onPress={() => this.props.navigation[item.action](item.page, item.params)}
               >
                 <View style={styles.iconContainer}>
                   <Icon style={styles.icon} name={item.icon} />

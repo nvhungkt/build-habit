@@ -141,7 +141,7 @@ const renderLastMonthLogs = (logs = []) => {
 
 export default class Detail extends React.Component {
   static navigationOptions = ({ navigation }) => {
-    const { habit = {} } = navigation.state.params;
+    const { habit = {}, onDeleteHabit } = navigation.state.params;
     const handleEdit = () => navigation.push('AddActivityDetail', { template: habit, editMode: true });
 
     return {
@@ -154,7 +154,7 @@ export default class Detail extends React.Component {
       headerTitleStyle: styles.title,
       headerRight: (
         <React.Fragment>
-          <Button transparent>
+          <Button onPress={onDeleteHabit} transparent>
             <Icon style={{color: 'black'}} name='md-trash' />
           </Button>
           <Button onPress={handleEdit} transparent>
@@ -178,6 +178,10 @@ export default class Detail extends React.Component {
 
   componentDidMount() {
     this.getToken();
+
+    this.props.navigation.setParams({
+      onDeleteHabit: this.onDeleteHabit
+    });
   }
 
   componentDidUpdate(prevProps) {
@@ -203,6 +207,14 @@ export default class Detail extends React.Component {
     const { showStatistic } = this.state;
 
     this.setState({ showStatistic: !showStatistic });
+  }
+
+  onDeleteHabit = () => {
+    const { navigation } = this.props;
+    const habitId = navigation.getParam('habitId', null);
+
+    this.props.stopHabit && this.props.stopHabit(habitId, this.token);
+    navigation.goBack();
   }
 
   onCheckDoneHabit = () => {

@@ -11,10 +11,14 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
     justifyContent: 'center',
     alignItems: 'stretch',
-    paddingTop: 30
+    marginTop: -40
   },
   title: {
     alignSelf: 'center'
+  },
+  logo: {
+    width: 250,
+    height: 250
   },
   input: {
     marginTop: 2
@@ -23,25 +27,14 @@ export const styles = StyleSheet.create({
     flex: 1,
     marginTop: 20,
     alignItems: 'center'
-  }
-});
-
-export const textStyles = done => ({
-  title: {
-    color: done ? '#009C0E' : '#777',
-    fontSize: 16,
-    fontWeight: 'bold'
   },
-  notes: {
-    color: done ? '#424242' : '#777',
-    fontSize: 14
+  button: {
+    flex: 1,
+    marginTop: 30,
+    alignItems: 'center',
+    backgroundColor: '#F06292'
   },
-  time: {
-    color: '#777',
-    fontSize: 12
-  },
-  status: {
-    color: done ? '#64dd17' : '#777',
-    fontSize: 26
+  link: {
+    color: '#E91E63'
   }
 });

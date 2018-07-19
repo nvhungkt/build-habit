@@ -139,6 +139,13 @@ export default class Home extends React.Component {
       });
     }
 
+    // const reload = this.props.navigation.getParam('reload', false);
+
+    // console.log(reload);
+    // if (reload) {
+    //   this.getToken();
+    // }
+
     if (this.props.success !== prevProps.success) {
       if (this.props.success) {
         this.loadHomePage(this.chosenDate || new Date());

@@ -1,6 +1,6 @@
 import { API_REQUEST } from '../../utils/api-middleware';
 
-import { getDetail, checkDoneHabit, unCheckDoneHabit } from '../../constant/api/habit.api';
+import { getDetail, checkDoneHabit, unCheckDoneHabit, stopHabit as stopHabitApi } from '../../constant/api/habit.api';
 import { getOffsetMillis } from '../../utils/time';
 
 export const LOAD_HABIT_DETAIL_SUCCESS = 'LOAD_HABIT_DETAIL_SUCCESS';
@@ -9,6 +9,9 @@ export const LOAD_HABIT_DETAIL_ERROR = 'LOAD_HABIT_DETAIL_ERROR';
 export const CHECK_DONE_HABIT_SUCCESS = 'ADD_NEW_HABIT_SUCCESS';
 export const CHECK_DONE_HABIT_FAILURE = 'ADD_NEW_HABIT_FAILURE';
 export const CHECK_DONE_HABIT_ERROR = 'ADD_NEW_HABIT_ERROR';
+export const STOP_HABIT_SUCCESS = 'ADD_NEW_HABIT_SUCCESS';
+export const STOP_HABIT_FAILURE = 'ADD_NEW_HABIT_FAILURE';
+export const STOP_HABIT_ERROR = 'ADD_NEW_HABIT_ERROR';
 
 const getHabitDetail = (id, { token, username }) => {
   return {
@@ -73,6 +76,27 @@ const putUndoneHabit = (id, time, { token, username }) => {
   };
 };
 
+const putStopHabit = (id, { token, username }) => {
+  return {
+    [API_REQUEST]: {
+      url: stopHabitApi,
+      headers: {
+        Authorization: token
+      },
+      method: 'PUT',
+      body: {
+        habitId: id,
+        username
+      },
+      action: {
+        success: STOP_HABIT_SUCCESS,
+        failure: STOP_HABIT_FAILURE,
+        error: STOP_HABIT_ERROR
+      }
+    }
+  };
+};
+
 export const loadHabitDetail = (id, { token, username }) => {
   return getHabitDetail(id, { token, username });
 };
@@ -83,4 +107,8 @@ export const checkDone = (id, time, { token, username }) => {
 
 export const checkUndone = (id, time, { token, username }) => {
   return putUndoneHabit(id, time, { token, username });
+};
+
+export const stopHabit = (id, { token, username }) => {
+  return putStopHabit(id, { token, username });
 };

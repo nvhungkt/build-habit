@@ -16,7 +16,7 @@ const menus = [
     {
       title: 'My habits and activities',
       icon: 'md-apps',
-      action: 'push',
+      action: 'navigate',
       page: 'Home',
       params: {}
     },
@@ -48,7 +48,7 @@ const menus = [
     {
       title: 'Account',
       icon: 'md-contact',
-      action: 'push',
+      action: 'navigate',
       page: 'Home',
       params: {}
     },
@@ -64,14 +64,14 @@ const menus = [
     {
       title: 'Settings',
       icon: 'md-settings',
-      action: 'push',
+      action: 'navigate',
       page: 'Home',
       params: {}
     },
     {
       title: 'About us',
       icon: 'md-information-circle',
-      action: 'push',
+      action: 'navigate',
       page: 'Home',
       params: { reload: true }
     }

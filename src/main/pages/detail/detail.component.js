@@ -139,6 +139,18 @@ const renderLastMonthLogs = (logs = []) => {
   );
 };
 
+// <Button style={{ height: 54, marginRight: -60 }} transparent>
+//   <Icon style={{color: 'black'}} name='md-share-alt' />
+// </Button>
+// <Picker
+//   mode='dropdown'
+//   style={{ width: 60 }}
+// >
+//   <Picker.Item label='Private' value={'Private'} />
+//   <Picker.Item label='Friend' value={'Friend'} />
+//   <Picker.Item label='Public' value={'Public'} />
+// </Picker>
+
 export default class Detail extends React.Component {
   static navigationOptions = ({ navigation }) => {
     const { habit = {}, onDeleteHabit } = navigation.state.params;
@@ -154,11 +166,11 @@ export default class Detail extends React.Component {
       headerTitleStyle: styles.title,
       headerRight: (
         <React.Fragment>
-          <Button style={{ height: 54 }} onPress={onDeleteHabit} transparent>
-            <Icon style={{color: 'black'}} name='md-trash' />
-          </Button>
           <Button style={{ height: 54 }} onPress={handleEdit} transparent>
             <Icon style={{color: 'black'}} name='md-create' />
+          </Button>
+          <Button style={{ height: 54 }} onPress={onDeleteHabit} transparent>
+            <Icon style={{color: 'black'}} name='md-trash' />
           </Button>
         </React.Fragment>
       ),

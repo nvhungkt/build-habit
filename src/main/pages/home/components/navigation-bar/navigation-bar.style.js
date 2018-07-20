@@ -6,7 +6,7 @@ export const styles = StyleSheet.create({
     marginTop: 24
   },
   appName: {
-    fontSize: 28,
+    fontSize: 26,
     fontFamily: "Pacifico",
     color: '#000',
     alignSelf: 'center'

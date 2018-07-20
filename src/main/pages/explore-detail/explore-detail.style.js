@@ -44,6 +44,18 @@ export const styles = StyleSheet.create({
   icon: {
     width: 40,
     color: '#009C0E'
+  },
+  action: {
+    position: 'absolute',
+    backgroundColor: '#fff',
+    height: 50,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    borderTopWidth: 0.5,
+    borderColor: '#ccc',
+    flex: 1,
+    flexDirection: 'row'
   }
 });
 

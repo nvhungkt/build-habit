@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity, AsyncStorage } from 'react-native';
 import { Content, Text, Icon } from 'native-base';
 
 import { styles, textStyles } from './sidebar.style';
@@ -73,7 +73,7 @@ const menus = [
       icon: 'md-information-circle',
       action: 'navigate',
       page: 'Home',
-      params: { reload: true }
+      params: {}
     }
   ]
 ];
@@ -90,7 +90,12 @@ export default class SideBar extends React.Component {
               <TouchableOpacity
                 style={styles.row}
                 key={itemIndex}
-                onPress={() => this.props.navigation[item.action](item.page, item.params)}
+                onPress={async () => {
+                  if (item.title === 'Log out') {
+                    await AsyncStorage.clear();
+                  }
+                  this.props.navigation[item.action](item.page, item.params);
+                }}
               >
                 <View style={styles.iconContainer}>
                   <Icon style={styles.icon} name={item.icon} />

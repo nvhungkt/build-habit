@@ -31,6 +31,18 @@ export const styles = StyleSheet.create({
     flex: 2,
     justifyContent: 'space-between',
     alignItems: 'flex-end'
+  },
+  loading: {
+    position: 'absolute',
+    backgroundColor: '#fff',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    opacity: 0.7,
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
   }
 });
 
@@ -51,5 +63,10 @@ export const textStyles = done => ({
   status: {
     color: done ? '#64dd17' : '#777',
     fontSize: 26
+  },
+  loading: {
+    fontSize: 26,
+    fontFamily: "Pacifico",
+    color: '#000'
   }
 });

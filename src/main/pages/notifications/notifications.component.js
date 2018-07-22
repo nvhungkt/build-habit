@@ -15,6 +15,13 @@ export default class Notifications extends React.Component {
     headerTitleStyle: styles.title
   }
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      loadingStatus: 'Loading...'
+    };
+  }
+
   componentDidMount() {
     this.getToken();
   }
@@ -24,6 +31,10 @@ export default class Notifications extends React.Component {
       if (this.props.success) {
         this.props.loadNotifications && this.props.loadNotifications();
       }
+    }
+
+    if (prevProps.notifications !== this.props.notifications) {
+      this.setState({ loadingStatus: null });
     }
   }
 
@@ -39,27 +50,34 @@ export default class Notifications extends React.Component {
 
   render() {
     return (
-      <Content style={styles.container}>
-        {this.props.notifications.map((notification, index) => {
-          const { id, title, description, icon, time, timeRange, done } = notification;
-          const date = new Date(time);
+      <React.Fragment>
+        <Content style={styles.container}>
+          {this.props.notifications.map((notification, index) => {
+            const { id, title, description, icon, time, timeRange, done } = notification;
+            const date = new Date(time);
 
-          return (
-            <TouchableOpacity onPress={() => this.handleChooseHabit(id, time)} style={styles.row} key={index}>
-              {icon && <Image style={styles.icon} source={icons[icon]} resizeMode='contain' />}
-              <View style={styles.content}>
-                <Text style={textStyles(done).title}>{timeRange}</Text>
-                <Text style={textStyles(done).title}>{title}</Text>
-                <Text numberOfLines={2} style={textStyles(done).notes}>{description}</Text>
-              </View>
-              <View style={styles.info}>
-                <Text style={textStyles(done).time}>{formatFullDate(date)}</Text>
-                <Icon style={textStyles(done).status} name="md-checkmark" />
-              </View>
-            </TouchableOpacity>
-          );
-        })}
-      </Content>
+            return (
+              <TouchableOpacity onPress={() => this.handleChooseHabit(id, time)} style={styles.row} key={index}>
+                {icon && <Image style={styles.icon} source={icons[icon]} resizeMode='contain' />}
+                <View style={styles.content}>
+                  <Text style={textStyles(done).title}>{timeRange}</Text>
+                  <Text style={textStyles(done).title}>{title}</Text>
+                  <Text numberOfLines={2} style={textStyles(done).notes}>{description}</Text>
+                </View>
+                <View style={styles.info}>
+                  <Text style={textStyles(done).time}>{formatFullDate(date)}</Text>
+                  <Icon style={textStyles(done).status} name="md-checkmark" />
+                </View>
+              </TouchableOpacity>
+            );
+          })}
+        </Content>
+        {this.state.loadingStatus && (
+          <View style={styles.loading}>
+            <Text style={textStyles(false).loading}>{this.state.loadingStatus}</Text>
+          </View>
+        )}
+      </React.Fragment>
     );
   }
 }

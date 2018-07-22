@@ -184,7 +184,8 @@ export default class Detail extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      showStatistic: false
+      showStatistic: false,
+      loadingStatus: 'Loading...'
     };
   }
 
@@ -200,6 +201,8 @@ export default class Detail extends React.Component {
     if (prevProps.habit !== this.props.habit) {
       const { habitMembers } = this.props.habit;
       const habit = habitMembers ? habitMembers[habitMembers.length - ARRAY_STEP] : {};
+
+      this.setState({ loadingStatus: null });
 
       this.props.navigation.setParams({
         habit
@@ -356,6 +359,11 @@ export default class Detail extends React.Component {
             </View>
           </View>
         }
+        {this.state.loadingStatus && (
+          <View style={styles.loading}>
+            <Text style={textStyles.loading}>{this.state.loadingStatus}</Text>
+          </View>
+        )}
       </React.Fragment>
     );
   }

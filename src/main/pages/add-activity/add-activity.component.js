@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchableOpacity } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 import { Content, Button, Text } from 'native-base';
 
 import { getToken } from '../../sqlite/token.storage';
@@ -20,8 +20,21 @@ export default class AddActivity extends React.Component {
     };
   }
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      loadingStatus: 'Loading...'
+    };
+  }
+
   componentDidMount() {
     this.getToken();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.tags !== this.props.tags) {
+      this.setState({ loadingStatus: null });
+    }
   }
 
   getToken = async () => {
@@ -33,28 +46,35 @@ export default class AddActivity extends React.Component {
     const { tags, navigation } = this.props;
 
     return (
-      <Content style={styles.container}>
-        <TouchableOpacity
-          style={{ marginTop: 15 }}
-          onPress={() => navigation.push('AddActivityDetail')}
-        >
-          <Text style={{
-            color: '#E91E63',
-            fontWeight: 'bold',
-            alignSelf: 'center',
-            flex: 1,
-            padding: 8,
-            borderColor: '#E91E63',
-            borderWidth: 1,
-            borderRadius: 20
-          }}>
-            CREATE YOUR OWN HABIT
-          </Text>
-        </TouchableOpacity>
-        {tags.map((tag, index) =>
-          <HabitTag navigation={navigation} key={index} name={tag.tagName} habits={tag.habits} />
+      <React.Fragment>
+        <Content style={styles.container}>
+          <TouchableOpacity
+            style={{ marginTop: 15 }}
+            onPress={() => navigation.push('AddActivityDetail')}
+          >
+            <Text style={{
+              color: '#E91E63',
+              fontWeight: 'bold',
+              alignSelf: 'center',
+              flex: 1,
+              padding: 8,
+              borderColor: '#E91E63',
+              borderWidth: 1,
+              borderRadius: 20
+            }}>
+              CREATE YOUR OWN HABIT
+            </Text>
+          </TouchableOpacity>
+          {tags.map((tag, index) =>
+            <HabitTag navigation={navigation} key={index} name={tag.tagName} habits={tag.habits} />
+          )}
+        </Content>
+        {this.state.loadingStatus && (
+          <View style={styles.loading}>
+            <Text style={textStyles.loading}>{this.state.loadingStatus}</Text>
+          </View>
         )}
-      </Content>
+      </React.Fragment>
     );
   }
 }

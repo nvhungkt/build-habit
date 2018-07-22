@@ -98,6 +98,7 @@ export default class Home extends React.Component {
                 navigation={navigation}
                 openDrawer={params.openDrawer}
                 openDatePicker={params.openDatePicker}
+                reload={params.reload}
               />
     };
   }
@@ -106,7 +107,7 @@ export default class Home extends React.Component {
     super(props);
     this.state = {
       activePage: 1,
-      debug: null,
+      loadingStatus: null,
       token: null
     };
   }
@@ -116,7 +117,8 @@ export default class Home extends React.Component {
 
     this.props.navigation.setParams({
       openDrawer: this.openDrawer,
-      openDatePicker: () => this.openDatePicker()
+      openDatePicker: () => this.openDatePicker(),
+      reload: this.getToken
     });
 
     this.notificationSubscription = Notifications.addListener(this.handleNotification);
@@ -129,7 +131,7 @@ export default class Home extends React.Component {
   componentDidUpdate(prevProps) {
     if (this.props.habits !== prevProps.habits) {
       setTimeout(() => {
-        this.setState({ activePage: DAY_RANGE });
+        this.setState({ activePage: DAY_RANGE, loadingStatus: null });
       }, INTERVAL_TIME);
     }
 
@@ -205,6 +207,7 @@ export default class Home extends React.Component {
     const fromDate = new Date(year, month, day - DAY_RANGE);
     const toDate = new Date(year, month, day + DAY_RANGE);
 
+    this.setState({ loadingStatus: 'Loading...' });
     this.props.loadHabits && this.props.loadHabits(formatDateCallApi(fromDate), formatDateCallApi(toDate), this.token);
   }
 
@@ -232,7 +235,11 @@ export default class Home extends React.Component {
         >
           {renderTabs(habits, { navigation })}
         </Tabs>
-        {this.state.debug && <Text>{this.state.debug}</Text>}
+        {this.state.loadingStatus && (
+          <View style={styles.loading}>
+            <Text style={textStyles.loading}>{this.state.loadingStatus}</Text>
+          </View>
+        )}
         {this.props.success ? null : <AddNewActivity navigation={this.props.navigation} />}
       </Drawer>
     );

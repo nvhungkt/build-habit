@@ -72,6 +72,8 @@ export default class AddActivityDetail extends React.Component {
       startMinute: from && from.minute,
       endHour: to && to.hour,
       endMinute: to && to.minute,
+      startDate: new Date(),
+      endDate: null,
       yearlyDate: repetition === HABIT_REPETITION.YEARLY ? new Date() : null,
       mode: repetition,
       scheduler: getScheduler(schedule),
@@ -145,6 +147,22 @@ export default class AddActivityDetail extends React.Component {
           yearlyDate,
           scheduler: [formatDateScheduleCallApi(yearlyDate)],
           mode: HABIT_REPETITION.YEARLY
+        });
+      }
+    } catch (error) {
+      return;
+    }
+  }
+
+  async openDatePicker(type) {
+    try {
+      const { action, year, month, day } = await DatePickerAndroid.open();
+
+      if (action !== DatePickerAndroid.dismissedAction) {
+        const date = new Date(year, month, day);
+
+        this.setState({
+          [type]: date
         });
       }
     } catch (error) {
@@ -245,6 +263,8 @@ export default class AddActivityDetail extends React.Component {
       startMinute,
       endHour,
       endMinute,
+      startDate,
+      endDate,
       yearlyDate,
       scheduler,
       mode,
@@ -373,6 +393,28 @@ export default class AddActivityDetail extends React.Component {
             >
               <Text style={textStyles.timeTitle}>End Time</Text>
               <Text style={textStyles.time}>{endHour ? convertDailyTimePoint(endHour, endMinute) : ''}</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        <View style={styles.row}>
+          <View style={styles.iconTop}>
+            <Icon style={styles.icon} name='md-calendar' />
+          </View>
+          <View style={styles.text}>
+            <TouchableOpacity
+              style={styles.timePicker}
+              onPress={() => this.openDatePicker('startDate')}
+            >
+              <Text style={textStyles.timeTitle}>Start Date</Text>
+              <Text style={textStyles.time}>{startDate ? startDate.toLocaleDateString() : ''}</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.timePicker}
+              onPress={() => this.openDatePicker('endDate')}
+            >
+              <Text style={textStyles.timeTitle}>End Date</Text>
+              <Text style={textStyles.time}>{endDate ? endDate.toLocaleDateString() : 'Future'}</Text>
             </TouchableOpacity>
           </View>
         </View>

@@ -21,11 +21,12 @@ import { convertHabitDetail } from './detail.utility';
 
 const ARRAY_START = 0;
 const ARRAY_STEP = 1;
-const MAX_SCORE = 30;
+const DEFAULT_MAX_SCORE = 30;
 const MIN_SCORE = 0;
 const SCORE_INCREMENT = 1;
 const ONE_HUNDRED_PERCENT = 100;
 const DAYS_OF_WEEK = 7;
+const DAY_TO_MILISECONDS = 86400000;
 const MINIMUM_DATA = 1;
 const LEVEL_1 = 20;
 const LEVEL_2 = 40;
@@ -41,11 +42,17 @@ const getScore = logs => {
 
   let score = MIN_SCORE;
 
+  // logs.forEach(log => {
+  //   if (log.done) {
+  //     score = Math.min(DEFAULT_MAX_SCORE, score + SCORE_INCREMENT);
+  //   } else {
+  //     score = Math.max(MIN_SCORE, score - SCORE_INCREMENT);
+  //   }
+  // });
+
   logs.forEach(log => {
     if (log.done) {
-      score = Math.min(MAX_SCORE, score + SCORE_INCREMENT);
-    } else {
-      score = Math.max(MIN_SCORE, score - SCORE_INCREMENT);
+      score++;
     }
   });
 
@@ -254,6 +261,13 @@ export default class Detail extends React.Component {
     const { habitMembers, logs } = this.props.habit;
     const { showStatistic } = this.state;
     const habit = habitMembers ? convertHabitDetail(habitMembers[habitMembers.length - ARRAY_STEP]) : {};
+
+    const startTime = habitMembers && habitMembers[ARRAY_START].startTime;
+    const endTime = habitMembers && habitMembers[habitMembers.length - ARRAY_STEP].endTime;
+    const startDate = new Date(startTime).toLocaleDateString();
+    const endDate = endTime > startTime ? new Date(endTime).toLocaleDateString() : 'Future';
+
+    const MAX_SCORE = endTime > startTime ? Math.ceil((endTime - startTime) / DAY_TO_MILISECONDS) : DEFAULT_MAX_SCORE;
     const score = getScore(logs);
     const progress = score / MAX_SCORE;
     const level = getLevel(logs);
@@ -288,6 +302,10 @@ export default class Detail extends React.Component {
               <View style={styles.row}>
                 <Icon style={styles.icon} name='md-alarm' />
                 <Text style={textStyles.default}>{habit.timeRange}</Text>
+              </View>
+              <View style={styles.row}>
+                <Icon style={styles.icon} name='md-calendar' />
+                <Text style={textStyles.default}>{`${startDate} - ${endDate}`}</Text>
               </View>
               <View style={styles.row}>
                 <Icon style={styles.icon} name='md-refresh' />

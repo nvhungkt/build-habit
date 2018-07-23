@@ -55,7 +55,10 @@ export default class ExploreDetail extends React.Component {
   render() {
     const habit = this.props.navigation.getParam('habit', {});
     const { level, description } = habit;
-    const progress = 0.6;
+    const startDate = '06/18/2018';
+    const endDate = '08/06/2018';
+    const numberOfDates = 50;
+    const progress = (FIVE_TIMES + THREE_TIMES + SEVEN_TIMES + SIX_TIMES + SEVEN_TIMES) / numberOfDates;
     const chartData = [FIVE_TIMES, THREE_TIMES, SEVEN_TIMES, SIX_TIMES, SEVEN_TIMES];
     const yAxisData = [MINIMUM_DATA, SEVEN_TIMES];
 
@@ -83,6 +86,10 @@ export default class ExploreDetail extends React.Component {
               <View style={styles.row}>
                 <Icon style={styles.icon} name='md-alarm' />
                 <Text style={textStyles.default}>08:00 - 09:00</Text>
+              </View>
+              <View style={styles.row}>
+                <Icon style={styles.icon} name='md-calendar' />
+                <Text style={textStyles.default}>{`${startDate} - ${endDate}`}</Text>
               </View>
               <View style={styles.row}>
                 <Icon style={styles.icon} name='md-refresh' />

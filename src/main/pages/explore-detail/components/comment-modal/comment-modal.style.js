@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-export const styles = StyleSheet.create({
+export const styles = {
   modal: {
     flex: 1
   },
@@ -27,8 +27,24 @@ export const styles = StyleSheet.create({
     flex: 1,
     width: undefined,
     height: undefined
+  },
+  search: {
+    position: 'absolute',
+    backgroundColor: '#fff',
+    height: 60,
+    left: 0,
+    right: 0,
+    borderTopWidth: 0.5,
+    borderColor: '#ccc',
+    padding: 10
+  },
+  row: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'stretch'
   }
-});
+};
 
 export const textStyles = StyleSheet.create({
   title: {

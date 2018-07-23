@@ -19,7 +19,7 @@ export const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     alignItems: 'center',
-    paddingTop: 20,
+    paddingTop: 15,
     paddingBottom: 20
   },
   progress: {

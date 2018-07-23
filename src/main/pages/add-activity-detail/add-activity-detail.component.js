@@ -320,6 +320,9 @@ export default class AddActivityDetail extends React.Component {
             {datesOfMonth.slice(FOURTH_WEEK).map(date => date)}
             <View style={{ flex: 4 }}></View>
           </View>
+          <View style={styles.row}></View>
+          <View style={styles.row}></View>
+          <View style={styles.row}></View>
         </React.Fragment>
       );
     };

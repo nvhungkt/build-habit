@@ -34,7 +34,7 @@ export const formatDateScheduleCallApi = date =>
 export const getDateApi = day => {
   const { date, month, year } = day;
 
-  return new Date(year, month - MONTH_GAP, date);
+  return new Date(year, month - MONTH_GAP, date - MONTH_GAP);
 };
 
 export const compareDates = (date1, date2) => {

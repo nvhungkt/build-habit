@@ -131,7 +131,7 @@ export default class Home extends React.Component {
   componentDidUpdate(prevProps) {
     if (this.props.habits !== prevProps.habits) {
       setTimeout(() => {
-        this.setState({ activePage: DAY_RANGE, loadingStatus: null });
+        this.setState({ activePage: DAY_RANGE + 1, loadingStatus: null });
       }, INTERVAL_TIME);
     }
 
